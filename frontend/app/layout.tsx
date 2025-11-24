@@ -7,6 +7,10 @@ import NextAuthProvider from '../providers/NextAuthProvider'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/libs/authOptions'
 import MainLayout from '@/components/layout/MainLayout'
+import { BannerProvider } from '@/providers/BannerProvider'
+import { SearchProvider } from '@/providers/SearchProvider'
+import { SnackbarProvider } from '@/providers/SnackbarProvider'
+import { SidebarProvider } from '@/providers/SidebarProvider'
 
 const notoSansThai = Noto_Sans_Thai({
   subsets: ['latin', 'thai'], // Specify the Thai subset for proper character display
@@ -15,8 +19,8 @@ const notoSansThai = Noto_Sans_Thai({
 })
 
 export const metadata: Metadata = {
-  title: 'Talent Journey',
-  description: 'ระบบลงทะเบียนเข้ากิจกรรม Talent Journey ของเด็ก CEDT',
+  title: 'Flybrary',
+  description: 'ระบบยืม-คืนหนังสือ',
 }
 
 export default async function RootLayout({
@@ -36,10 +40,18 @@ export default async function RootLayout({
         />
       </head>
       <body className={`${notoSansThai.className} antialiased`}>
-        <NextAuthProvider session={session}>
-          <ModalProvider>
-            <MainLayout>{children}</MainLayout>
-          </ModalProvider>
+      <NextAuthProvider session={session}>
+          <SearchProvider>
+            <SnackbarProvider>
+              <ModalProvider>
+                <BannerProvider>
+                  <SidebarProvider>
+                    <MainLayout>{children}</MainLayout>
+                  </SidebarProvider>
+                </BannerProvider>
+              </ModalProvider>
+            </SnackbarProvider>
+          </SearchProvider>
         </NextAuthProvider>
       </body>
     </html>

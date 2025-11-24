@@ -141,12 +141,6 @@ export default function MenuBar() {
       color: 'gray',
     },
     {
-      label: 'คู่มือการใช้งาน',
-      icon: <QuestionMarkCircleIcon className='size-5' />,
-      href: `/document`,
-      color: 'gray',
-    },
-    {
       label: 'ออกจากระบบ',
       icon: <ArrowRightStartOnRectangleIcon className='size-5' />,
       onAction: handleOpenSignOutModal,
@@ -178,18 +172,6 @@ export default function MenuBar() {
             <>
               <Navbar
                 className={clsx('container grid grid-cols-2 lg:grid-cols-5')}>
-                {/* Logo */}
-                <div className='flex w-full flex-row items-center justify-start'>
-                  <Image
-                    src='/logo/small.png'
-                    alt='Logo'
-                    width={0}
-                    height={0}
-                    loading='eager'
-                    sizes='100vw'
-                    className='h-8 w-auto'
-                  />
-                </div>
 
                 {/* Navbar Items (Desktop) */}
                 <div
@@ -258,7 +240,7 @@ export default function MenuBar() {
                   <div className='border-b border-gray-200' />
 
                   {/* User (Mobile) */}
-                  {session?.user && status === 'authenticated' ? (
+                  {session?.user ? (
                     <div className={clsx('flex flex-col space-y-2')}>
                       <DisclosureButton
                         as='a'
