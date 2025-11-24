@@ -1,6 +1,6 @@
 'use client'
 
-import { checkIsMobile } from '@/utils/device'
+import { checkIsMobile } from "../utils/device"
 import React, { createContext, useContext, useState, ReactNode } from 'react'
 
 // Context that provides the state and functions for the sidebar

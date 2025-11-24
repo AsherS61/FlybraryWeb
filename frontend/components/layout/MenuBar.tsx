@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 import clsx from 'clsx'
 
 // import next
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useSession, signOut } from 'next-auth/react'
 
@@ -13,7 +12,7 @@ import { useSession, signOut } from 'next-auth/react'
 import Navbar from './navbar/Navbar'
 import NavbarItem from './navbar/NavbarItem'
 import DropdownMenu from '../common/DropdownMenu'
-import { useModal } from '@/providers/ModalProvider'
+import { useModal } from '../../providers/ModalProvider'
 
 // import util
 import {
@@ -27,8 +26,6 @@ import {
   Bars3Icon,
   XMarkIcon,
   ArrowRightStartOnRectangleIcon,
-  ExclamationTriangleIcon,
-  QuestionMarkCircleIcon,
   WrenchScrewdriverIcon,
   HomeIcon,
 } from '@heroicons/react/24/outline'
@@ -96,7 +93,6 @@ export default function MenuBar() {
         onConfirm={() => {
           handleSignOut()
         }}
-        imageURL={'/image/Banner.png'}
       />
     )
   }
@@ -124,7 +120,7 @@ export default function MenuBar() {
             <>
               <h1 className='font-semibold'>{session?.user?.name}</h1>
               <p className='text-sm text-gray-600'>
-                {session?.user?.studentId || session?.user?.email}
+                {session?.user?.email}
               </p>
             </>
           ) : null}
@@ -171,7 +167,7 @@ export default function MenuBar() {
           return (
             <>
               <Navbar
-                className={clsx('container grid grid-cols-2 lg:grid-cols-5')}>
+                className={'container grid grid-cols-2 lg:grid-cols-5'}>
 
                 {/* Navbar Items (Desktop) */}
                 <div

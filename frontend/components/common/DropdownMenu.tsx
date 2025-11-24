@@ -1,4 +1,4 @@
-import { colorMapperMenu, colorMapperText } from '@/utils/color'
+import { colorMapperMenu, colorMapperText } from '../../utils/color'
 import clsx from 'clsx'
 import Divider from '../ui/Divider'
 import Button from '../ui/Button'

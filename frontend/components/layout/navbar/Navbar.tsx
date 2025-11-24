@@ -3,11 +3,7 @@ import clsx from 'clsx'
 export default function Navbar({ children, className }: NavbarProps) {
   return (
     <div
-      className={clsx(
-        'sticky top-0 z-[100] w-full',
-        'bg-white shadow-sm',
-        'transition-all duration-200 ease-in-out'
-      )}>
+      className={'sticky top-0 z-[100] w-full bg-white shadow-sm transition-all duration-200 ease-in-out'}>
       <div
         className={clsx(
           'h-16 w-full',

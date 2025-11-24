@@ -1,7 +1,7 @@
 // src/libs/auth/authOptions.ts
 import { AuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { login } from '@/libs/auth'
+import { login } from './auth'
 
 export const authOptions: AuthOptions = {
   providers: [

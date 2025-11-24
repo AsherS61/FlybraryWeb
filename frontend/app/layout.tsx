@@ -5,12 +5,12 @@ import './globals.css'
 import { ModalProvider } from '../providers/ModalProvider'
 import NextAuthProvider from '../providers/NextAuthProvider'
 import { getServerSession } from 'next-auth'
-import { authOptions } from '@/libs/authOptions'
-import MainLayout from '@/components/layout/MainLayout'
-import { BannerProvider } from '@/providers/BannerProvider'
-import { SearchProvider } from '@/providers/SearchProvider'
-import { SnackbarProvider } from '@/providers/SnackbarProvider'
-import { SidebarProvider } from '@/providers/SidebarProvider'
+import MainLayout from '../components/layout/MainLayout'
+import { authOptions } from '../libs/authOptions'
+import { BannerProvider } from '../providers/BannerProvider'
+import { SearchProvider } from '../providers/SearchProvider'
+import { SidebarProvider } from '../providers/SidebarProvider'
+import { SnackbarProvider } from '../providers/SnackbarProvider'
 
 const notoSansThai = Noto_Sans_Thai({
   subsets: ['latin', 'thai'], // Specify the Thai subset for proper character display

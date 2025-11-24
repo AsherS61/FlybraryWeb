@@ -1,4 +1,4 @@
-import { colorMapperChip } from '@/utils/color'
+import { colorMapperChip } from '../../utils/color'
 import clsx from 'clsx'
 
 export default function Alert({

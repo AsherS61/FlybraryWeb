@@ -1,6 +1,6 @@
 'use client'
 
-import { colorMapperButton } from '@/utils/color'
+import { colorMapperButton } from '../../utils/color'
 import { Button as HeadlessButton } from '@headlessui/react'
 import clsx from 'clsx'
 import Link from 'next/link'

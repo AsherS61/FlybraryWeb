@@ -1,4 +1,4 @@
-import DropdownMenu from '@/components/common/DropdownMenu'
+import DropdownMenu from '../../common/DropdownMenu'
 import clsx from 'clsx'
 import Link from 'next/link'
 
@@ -7,6 +7,7 @@ export default function NavbarItem({
   children,
   icon,
   subItems,
+  className,
 }: NavbarItemProps) {
   const hasSubItem = subItems && subItems?.length != 0 ? true : false
   const subItemOptions = subItems?.map((item) => {
@@ -24,7 +25,8 @@ export default function NavbarItem({
           'flex w-fit flex-row items-center justify-start gap-x-2',
           'font-medium hover:font-semibold',
           'text-gray-600 hover:text-gray-900',
-          'transition-all duration-200 ease-in-out'
+          'transition-all duration-200 ease-in-out',
+          className
         )}>
         {icon}
         <span>{children}</span>
@@ -39,7 +41,8 @@ export default function NavbarItem({
           'font-medium hover:font-semibold',
           'text-gray-600 hover:text-gray-900',
           'transition-all duration-200 ease-in-out',
-          'outline-none'
+          'outline-none',
+          className
         )}>
         {icon}
         {children}
@@ -53,6 +56,7 @@ interface NavbarItemProps {
   children: React.ReactNode
   icon?: React.ReactNode
   subItems?: SubItem[] | undefined
+  className?: string
 }
 
 interface SubItem {

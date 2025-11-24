@@ -1,4 +1,4 @@
-import { FullColorListInterface } from '@/interface/common'
+import { FullColorListInterface } from '../interface/common'
 import bgFullColorList from './fullColorList/bgFullColorList.json'
 import borderFullColorList from './fullColorList/borderFullColorList.json'
 import outlineFullColorList from './fullColorList/outlineFullColorList.json'

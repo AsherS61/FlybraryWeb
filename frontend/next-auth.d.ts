@@ -11,18 +11,10 @@ declare module 'next-auth' {
       name: string
       profilePictureUrl: string
 
-      studentId?: string
-      isFromIdp?: boolean
-
       email?: string
       tel?: string
       lineId?: string
 
-      university?: string
-      faculty?: string
-      department?: string
-      program?: string
-      admissionYear?: string
     }
   }
 }

@@ -1,14 +1,14 @@
 'use client'
 
-import Button from '@/components/ui/Button'
-import { colorMapperButton } from '@/utils/color'
-import { useModal } from '@/providers/ModalProvider'
+import Button from '../ui/Button'
+import { colorMapperButton } from '../../utils/color'
+import { useModal } from '../../providers/ModalProvider'
 import Image from 'next/image'
 import TextField from './TextField'
 import { useState } from 'react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
-import Divider from '@/components/ui/Divider'
+import Divider from '../ui/Divider'
 
 export default function BasicModal({
   id,

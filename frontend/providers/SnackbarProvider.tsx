@@ -3,8 +3,8 @@
 import clsx from 'clsx'
 import { createContext, useContext, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import Button from '@/components/ui/Button'
-import { formatDateTimeEn } from '@/utils/date/dateFormatter'
+import Button from '../components/ui/Button'
+import { formatDateTimeEn } from '../utils/date/dateFormatter'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 
 // Snackbar interface

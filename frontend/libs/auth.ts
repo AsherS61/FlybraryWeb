@@ -1,5 +1,6 @@
 // import interface
-import { useGet, usePost } from "@/utils/useQuery"
+import { useGet, usePost } from "../utils/useQuery"
+
 
 //---------------------
 // GET
