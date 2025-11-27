@@ -1,3 +1,5 @@
+'use client'
+
 import Divider from "@/components/ui/Divider";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -75,9 +77,9 @@ export default function ProfilePage() {
       <h2 className="text-2xl font-semibold mb-4">Currently Borrowing</h2>
 
       <div className="space-y-4">
-        {currentlyBorrowing.map((book) => (
+        {currentlyBorrowing?.map((book, idx) => (
           <div
-            key={book.id}
+            key={`books-${idx}`}
             className="p-4 border rounded-xl flex gap-4 shadow-sm hover:shadow transition bg-white"
           >
             <img
