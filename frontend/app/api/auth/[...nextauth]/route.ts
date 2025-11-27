@@ -20,21 +20,21 @@ const handler = NextAuth({
         token.accessToken = account.access_token;
         token.idToken = account.id_token;
 
-        // if (profile) {
-        //   const userFromDB = await findOrCreateUser({
-        //     name: profile.name,
-        //     email: profile.email,     
-        //     picture: profile.image,
-        //     lineId: profile.sub,   
-        //   });
+        if (profile) {
+          const userFromDB = await findOrCreateUser({
+            displayName: profile.name,
+            email: profile.email,     
+            picture: profile.image,
+            lineId: profile.sub,   
+          });
 
-        //   token.userId = userFromDB._id.toString();
-        //   token.role = userFromDB.role;
-        //   token.name = userFromDB.name;
-        //   token.email = userFromDB.email;
-        //   token.picture = userFromDB.picture;
-        //   token.lineId = userFromDB.lineId;
-        // }
+          token.userId = userFromDB.id.toString();
+          token.role = userFromDB.role;
+          token.name = userFromDB.name;
+          token.email = userFromDB.email;
+          token.picture = userFromDB.picture;
+          token.lineId = userFromDB.lineId;
+        }
       }
       return token;
     },
