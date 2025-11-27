@@ -76,7 +76,7 @@ export default function BookDetail({ params }: { params: { id: string } }) {
   const isBorrowedByUser = book?.borrowedBy === session?.userId;
 
   return (
-    <div className="px-20 py-10 w-full items-center justify-center gap-5 mx-auto mt-20 flex flex-col">
+    <div className="p-10 md:px-20 py-10 w-full items-center justify-center gap-5 mx-auto mt-20 flex flex-col">
       <div className="flex flex-col md:flex-row gap-10 md:gap-20 mx-auto items-center">
         <img
           src={book?.coverImage || ''}
@@ -89,16 +89,14 @@ export default function BookDetail({ params }: { params: { id: string } }) {
           <p className="text-gray-600 mt-2 text-lg">by {book.author}</p>
   
           <p className="mt-6 text-gray-700">{book.desc}</p>
-  
+   
           <div className="mt-6">
-              <span
-              className={`px-4 py-2 rounded-full text-sm ${
+              <span className={`px-4 py-2 rounded-full text-sm shadow-md ${
                   book.status === "available"
                   ? "bg-green-100 text-green-700"
-                  : "bg-red-100 text-red-700"
-              }`}
+                  : "bg-red-100 text-red-700"}`}
               >
-              {book.status === "available" ? "Available" : "Borrowed"}
+                {book.status === "available" ? "Available" : "Borrowed"}
               </span>
           </div>
           <div className="mt-8">
