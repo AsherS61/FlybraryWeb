@@ -25,7 +25,7 @@ const handler = NextAuth({
         //   token.email = userFromDB.email;
         //   token.picture = userFromDB.picture;
         // }
-        token.access_token = account.access_token
+        token.accessToken = account.access_token
       }
       return token;
     },
