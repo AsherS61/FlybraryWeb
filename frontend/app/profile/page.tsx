@@ -37,17 +37,8 @@ const currentlyBorrowing = [
 ];
 
 export default function ProfilePage() {
-//   const { data : session } = useSession();
-  const user = {
-    id: 1,
-    name: "Ashira Boonfongmanee",
-    profilePictureUrl:
-        "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=400",
-    role: "student",
-    email: "ashira@example.com",
-    tel: "0812345678",
-    lineId: "U1234567890abcdef",
-  };
+  const { data : session } = useSession();
+  const user = session?.user
 
   return (
     <div className="max-w-4xl mx-auto p-8 space-y-6 mt-20">
