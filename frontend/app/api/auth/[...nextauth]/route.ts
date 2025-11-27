@@ -20,12 +20,21 @@ const handler = NextAuth({
         token.accessToken = account.access_token;
         token.idToken = account.id_token;
 
-        if (profile) {
-          token.name = profile.name;
-          token.picture = profile.image;
-          token.email = profile.email; 
-          token.lineId = profile.sub;
-        }
+        // if (profile) {
+        //   const userFromDB = await findOrCreateUser({
+        //     name: profile.name,
+        //     email: profile.email,     
+        //     picture: profile.image,
+        //     lineId: profile.sub,   
+        //   });
+
+        //   token.userId = userFromDB._id.toString();
+        //   token.role = userFromDB.role;
+        //   token.name = userFromDB.name;
+        //   token.email = userFromDB.email;
+        //   token.picture = userFromDB.picture;
+        //   token.lineId = userFromDB.lineId;
+        // }
       }
       return token;
     },
@@ -33,10 +42,13 @@ const handler = NextAuth({
       session.accessToken = token.accessToken as string;
       session.idToken = token.idToken as string;
 
-      session.user.name = token.name as string;
-      session.user.email = token.email as string;
-      session.user.image = token.picture as string;
-      session.user.lineId = token.lineId as string;
+      session.user.id = token?.userId as number;
+      session.user.role = token?.role as string;
+      session.user.name = token?.name as string;
+      session.user.email = token?.email as string;
+      session.user.image = token?.picture as string;
+      session.user.lineId = token?.lineId as string;
+
       return session;
     },
     async redirect({ url, baseUrl }) {
