@@ -47,17 +47,16 @@ const handler = NextAuth({
         token.lineId = p.lineId;
       }
 
+      console.log("TOKEN:", token)
+
       return token;
     },
     async session({ session, token }) {
-      console.log("TOKEN:", token)
-
-      session.accessToken = token.accessToken as string;
-      session.idToken = token.idToken as string;
+      console.log("SESSION CALLBACK: ", { token });
       // session.user.id = token.userId as number;
       // session.user.role = token.role as string;
       session.user.name = token.name as string;
-      session.user.image = token.picture as string;
+      session.user.picture = token.picture as string;
       session.user.lineId = token.lineId as string;
 
       return session;

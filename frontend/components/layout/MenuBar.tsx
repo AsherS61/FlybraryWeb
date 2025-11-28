@@ -120,9 +120,6 @@ export default function MenuBar() {
           {status === 'authenticated' && session?.user ? (
             <>
               <h1 className='font-semibold'>{session?.user?.name}</h1>
-              <p className='text-sm text-gray-600'>
-                {session?.user?.email}
-              </p>
             </>
           ) : null}
         </div>

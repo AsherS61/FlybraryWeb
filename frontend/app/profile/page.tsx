@@ -47,7 +47,7 @@ export default function ProfilePage() {
       {/* Top Section */}
       <div className="flex md:flex-row items-center justify-around md:items-start gap-8">
         <Image
-          src={user?.image || ''}
+          src={user?.picture || ''}
           alt="profile picture"
           width={200}
           height={200}
@@ -59,12 +59,6 @@ export default function ProfilePage() {
           <p className="text-gray-600 capitalize mt-1">{user?.role}</p>
 
           <div className="mt-4 space-y-1 text-gray-700">
-            <p>
-              <span className="font-medium">Email:</span> {user?.email}
-            </p>
-            <p>
-              <span className="font-medium">Tel:</span> {user?.tel}
-            </p>
             <p>
               <span className="font-medium">LINE ID:</span> {user?.lineId}
             </p>
