@@ -1,6 +1,13 @@
 import { findOrCreateUser } from "@/libs/auth";
-import NextAuth, { Profile } from "next-auth";
+import NextAuth from "next-auth";
 import LineProvider from "next-auth/providers/line";
+interface LineProfile {
+  sub: string;
+  name: string;
+  picture: string;
+  email?: string;
+  lineId: string;
+}
 
 const handler = NextAuth({
   providers: [
@@ -12,15 +19,6 @@ const handler = NextAuth({
           scope: "openid profile email",
         },
       },
-      profile(profile) {
-        return {
-          id: profile.sub,
-          name: profile.name,
-          image: profile.picture,
-          email: profile.email ?? null,
-          lineId: profile.sub,
-        };
-      },
     }
   )],
   session: {
@@ -30,6 +28,7 @@ const handler = NextAuth({
     async jwt({ token, account, profile }) {
       console.log("Line Account:", account);
       console.log("LINE profile:", profile);
+      const p = profile as LineProfile;
       
       if (account && profile) {
         token.accessToken = account.access_token;
@@ -43,26 +42,23 @@ const handler = NextAuth({
         
         // token.userId = userFromDB.id;
         // token.role = userFromDB.role;
-        token.name = profile.name;
-        token.picture = profile.image;
-        token.lineId = profile.sub;
+        token.name = p.name;
+        token.picture = p.picture;
+        token.lineId = p.lineId;
       }
+
       return token;
     },
     async session({ session, token }) {
-      console.log("TOKEN: ", token)
-      if (token) {
+      console.log("TOKEN:", token)
 
-
-        session.accessToken = token.accessToken as string;
-        session.idToken = token.idToken as string;
-
-        // session.user.id = token.userId as number;
-        // session.user.role = token.role as string;
-        session.user.name = token.name as string;
-        session.user.image = token.picture as string;
-        session.user.lineId = token.lineId as string;
-      }
+      session.accessToken = token.accessToken as string;
+      session.idToken = token.idToken as string;
+      // session.user.id = token.userId as number;
+      // session.user.role = token.role as string;
+      session.user.name = token.name as string;
+      session.user.image = token.picture as string;
+      session.user.lineId = token.lineId as string;
 
       return session;
     },
