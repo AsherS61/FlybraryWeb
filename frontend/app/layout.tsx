@@ -7,7 +7,6 @@ import NextAuthProvider from '../providers/NextAuthProvider'
 import MainLayout from '../components/layout/MainLayout'
 import { BannerProvider } from '../providers/BannerProvider'
 import { SearchProvider } from '../providers/SearchProvider'
-import { SidebarProvider } from '../providers/SidebarProvider'
 import { SnackbarProvider } from '../providers/SnackbarProvider'
 import { getSession } from 'next-auth/react'
 
@@ -44,9 +43,7 @@ export default async function RootLayout({
             <SnackbarProvider>
               <ModalProvider>
                 <BannerProvider>
-                  <SidebarProvider>
-                    <MainLayout>{children}</MainLayout>
-                  </SidebarProvider>
+                  <MainLayout>{children}</MainLayout>
                 </BannerProvider>
               </ModalProvider>
             </SnackbarProvider>

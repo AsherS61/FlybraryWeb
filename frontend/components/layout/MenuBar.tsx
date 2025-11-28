@@ -28,9 +28,7 @@ import {
 import { UserCircleIcon } from '@heroicons/react/24/solid'
 
 // import libs
-import Divider from '../ui/Divider'
 import BasicModal from '../common/BasicModal'
-import { checkIsMobile } from '../../utils/device'
 
 export default function MenuBar() {
   // Get the path accessibility by group
@@ -54,7 +52,6 @@ export default function MenuBar() {
 
   // Secondary variables
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const isMobile = checkIsMobile();
 
   // Function for redirect to get IDP code
   const handleSignIn = () => {
