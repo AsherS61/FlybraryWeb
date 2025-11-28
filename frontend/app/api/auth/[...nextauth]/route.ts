@@ -9,51 +9,42 @@ const handler = NextAuth({
       clientSecret: process.env.LINE_CHANNEL_SECRET!,
       authorization: {
         params: {
-          scope: "profile openid",
+          scope: "profile openid email",
         },
       },
     }),
   ],
   callbacks: {
     async jwt({ token, account, profile }) {
-      if (account) {
-        token.accessToken = account.access_token;
-        token.idToken = account.id_token;
-
-        if (profile) {
-          const userFromDB = await findOrCreateUser({
-            displayName: profile.name,    
-            picture: profile.image,
-            lineId: profile.sub,   
-          });
-          
-          console.log("LINE profile:", profile);
-          
-          token.userId = userFromDB.id;
-          token.role = userFromDB.role;
-          token.name = userFromDB.name;
-          token.picture = userFromDB.picture;
-          token.lineId = userFromDB.lineId;
-        }
+      if (account && profile) {
+        const userFromDB = await findOrCreateUser(profile);
+        token.userId = userFromDB._id.toString();
+        token.role = userFromDB.role;
+        token.name = userFromDB.name;
+        token.email = userFromDB.email;
+        token.picture = userFromDB.picture;
       }
       return token;
     },
     async session({ session, token }) {
-      session.accessToken = token.accessToken as string;
-      session.idToken = token.idToken as string;
-
-      session.user.id = token.userId as number;
-      session.user.role = token?.role as string;
-      session.user.name = token?.name as string;
-      session.user.image = token?.picture as string;
-      session.user.lineId = token?.lineId as string;
-
+      // Keep id as string to avoid NaN when converting types
+      session.user.id = token.userId as string;
+      session.user.role = token.role as string;
+      session.user.name = token.name as string;
+      session.user.email = token.email as string;
+      session.user.profilePictureUrl = token.picture as string;
       return session;
     },
     async redirect({ url, baseUrl }) {
-      if (url.includes('/callback') && url.includes('code=')) return url;
-      if (url.startsWith('/')) return `${baseUrl}${url}`;
-      if (new URL(url).origin === baseUrl) return url;
+      if (!url) return baseUrl;
+      if (typeof url === "string" && url.includes("/callback") && url.includes("code=")) return url;
+      if (typeof url === "string" && url.startsWith("/")) return `${baseUrl}${url}`;
+      try {
+        const dest = new URL(typeof url === "string" ? url : String(url));
+        if (dest.origin === baseUrl) return url as string;
+      } catch (e) {
+        // malformed or relative URL; fallthrough to baseUrl
+      }
       return baseUrl;
     },
   },
