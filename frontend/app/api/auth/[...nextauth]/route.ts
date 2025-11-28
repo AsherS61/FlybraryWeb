@@ -9,8 +9,17 @@ const handler = NextAuth({
       clientSecret: process.env.LINE_CHANNEL_SECRET!,
       authorization: {
         params: {
-          scope: "profile openid email",
+          scope: "openid profile email",
         },
+      },
+      profile(profile) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          image: profile.picture,
+          email: profile.email ?? null,
+          lineId: profile.sub,
+        };
       },
     }),
   ],
