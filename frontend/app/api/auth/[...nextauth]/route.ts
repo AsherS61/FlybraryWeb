@@ -44,7 +44,7 @@ export const handler = NextAuth({
         // token.role = userFromDB.role;
         token.name = p.name;
         token.picture = p.picture;
-        token.lineId = p.sub;
+        token.sub = p.sub;
       }
 
       console.log("TOKEN:", token)
@@ -57,7 +57,7 @@ export const handler = NextAuth({
       // session.user.role = token.role as string;
       session.user.name = token.name as string;
       session.user.picture = token.picture as string;
-      session.user.lineId = token.lineId as string;
+      session.user.lineId = token.sub as string;
 
       return session;
     },
