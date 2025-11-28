@@ -9,7 +9,7 @@ const handler = NextAuth({
       clientSecret: process.env.LINE_CHANNEL_SECRET!,
       authorization: {
         params: {
-          scope: "profile openid email",
+          scope: "profile openid",
         },
       },
     }),
@@ -26,8 +26,10 @@ const handler = NextAuth({
             picture: profile.image,
             lineId: profile.sub,   
           });
-
-          token.userId = userFromDB.id.toString();
+          
+          console.log("LINE profile:", profile);
+          
+          token.userId = userFromDB.id;
           token.role = userFromDB.role;
           token.name = userFromDB.name;
           token.picture = userFromDB.picture;
@@ -40,7 +42,7 @@ const handler = NextAuth({
       session.accessToken = token.accessToken as string;
       session.idToken = token.idToken as string;
 
-      session.user.id = token?.userId as number;
+      session.user.id = token.userId as number;
       session.user.role = token?.role as string;
       session.user.name = token?.name as string;
       session.user.image = token?.picture as string;
@@ -49,15 +51,9 @@ const handler = NextAuth({
       return session;
     },
     async redirect({ url, baseUrl }) {
-      if (!url) return baseUrl;
-      if (typeof url === "string" && url.includes("/callback") && url.includes("code=")) return url;
-      if (typeof url === "string" && url.startsWith("/")) return `${baseUrl}${url}`;
-      try {
-        const dest = new URL(typeof url === "string" ? url : String(url));
-        if (dest.origin === baseUrl) return url as string;
-      } catch (e) {
-        // malformed or relative URL; fallthrough to baseUrl
-      }
+      if (url.includes('/callback') && url.includes('code=')) return url;
+      if (url.startsWith('/')) return `${baseUrl}${url}`;
+      if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
     },
   },
