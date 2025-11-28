@@ -28,7 +28,8 @@ const handler = NextAuth({
   },
   callbacks: {
     async jwt({ token, account, profile }) {
-      console.log("LINE profile:", account);
+      console.log("Line Account:", account);
+      console.log("LINE profile:", profile);
       
       // if (account && profile) {
       //   token.accessToken = account.access_token;
