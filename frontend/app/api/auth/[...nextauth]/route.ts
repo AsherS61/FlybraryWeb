@@ -16,23 +16,36 @@ const handler = NextAuth({
   ],
   callbacks: {
     async jwt({ token, account, profile }) {
-      if (account && profile) {
-        const userFromDB = await findOrCreateUser(profile);
-        token.userId = userFromDB._id.toString();
-        token.role = userFromDB.role;
-        token.name = userFromDB.name;
-        token.email = userFromDB.email;
-        token.picture = userFromDB.picture;
+      if (account) {
+        token.accessToken = account.access_token;
+        token.idToken = account.id_token;
+
+        if (profile) {
+          const userFromDB = await findOrCreateUser({
+            displayName: profile.name,    
+            picture: profile.image,
+            lineId: profile.sub,   
+          });
+
+          token.userId = userFromDB.id.toString();
+          token.role = userFromDB.role;
+          token.name = userFromDB.name;
+          token.picture = userFromDB.picture;
+          token.lineId = userFromDB.lineId;
+        }
       }
       return token;
     },
     async session({ session, token }) {
-      // Keep id as string to avoid NaN when converting types
-      session.user.id = token.userId as string;
-      session.user.role = token.role as string;
-      session.user.name = token.name as string;
-      session.user.email = token.email as string;
-      session.user.profilePictureUrl = token.picture as string;
+      session.accessToken = token.accessToken as string;
+      session.idToken = token.idToken as string;
+
+      session.user.id = token?.userId as number;
+      session.user.role = token?.role as string;
+      session.user.name = token?.name as string;
+      session.user.image = token?.picture as string;
+      session.user.lineId = token?.lineId as string;
+
       return session;
     },
     async redirect({ url, baseUrl }) {
