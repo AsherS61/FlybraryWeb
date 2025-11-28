@@ -2,13 +2,6 @@ import { findOrCreateUser } from "@/libs/auth";
 import NextAuth, { Profile } from "next-auth";
 import LineProvider from "next-auth/providers/line";
 
-interface lineProfileInterface {
-  sub: string,
-  name: string,
-  picture: string,
-  email: string,
-}
-
 const handler = NextAuth({
   providers: [
     LineProvider({
@@ -35,7 +28,7 @@ const handler = NextAuth({
   },
   callbacks: {
     async jwt({ token, account, profile }) {
-      console.log("LINE profile:", profile);
+      console.log("LINE profile:", account);
       
       // if (account && profile) {
       //   token.accessToken = account.access_token;
