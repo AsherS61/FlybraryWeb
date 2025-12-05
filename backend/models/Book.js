@@ -5,7 +5,7 @@ const bookSchema = new mongoose.Schema({
         type: String,
         validate: {
             validator: function(v) {
-                return v.length === 12;
+                return v.length === 10 || v.length === 13;
             },
             message: props => `${props.value} is not a valid ISBN.`
         },
@@ -26,7 +26,6 @@ const bookSchema = new mongoose.Schema({
     author: {
         type: String,
         required: true,
-        unique: true,
         trim: true,
         maxlength: [50, 'Add Author name please.']
     },
