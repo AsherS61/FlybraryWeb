@@ -7,7 +7,7 @@ import { borrowBook, getBook, returnBook } from "@/libs/book";
 import { BookInterface } from "@/interface/book";
 import { useParams } from "next/navigation";
 
-export default async function BookDetail() {
+export default function BookDetail() {
   const { data: session } = useSession();
   const [book, setBook] = useState<BookInterface>();
   const params = useParams();
