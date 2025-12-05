@@ -42,11 +42,11 @@ export const handler = NextAuth({
 
         console.log("USER: " , userFromDB);
         
-        token.userId = userFromDB.id;
-        token.role = userFromDB.role;
-        token.name = p.name;
-        token.picture = userFromDB.profile;
-        token.sub = userFromDB.lineId;
+        token.userId = userFromDB.data?._id;
+        token.role = userFromDB.data?.role;
+        token.name = userFromDB.data?.name;
+        token.picture = userFromDB.data?.profile;
+        token.sub = userFromDB.data?.lineId;
       }
 
       console.log("TOKEN:", token)
