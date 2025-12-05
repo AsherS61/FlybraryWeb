@@ -118,6 +118,8 @@ exports.borrowBook = async (req, res, next) => {
         const bookId = req.params.id;
         const userId = req.body.userId;
 
+        console.log("Borrow Book - Book ID:", bookId, "User ID:", userId);
+
         const book = await Book.findById(bookId);
         const user = await User.findById(userId);
 
