@@ -63,7 +63,7 @@ export default function ProfilePage() {
             className="p-4 border rounded-xl flex gap-4 shadow-sm hover:shadow transition bg-white"
           >
             <img
-              src={book.coverImage}
+              src={book.cover}
               alt={book.name}
               className="w-24 h-32 object-cover rounded-lg"
             />
@@ -77,7 +77,7 @@ export default function ProfilePage() {
               </div>
 
               <a
-                href={`/books/${book.id}`}
+                href={`/books/${book?._id}`}
                 className="text-blue-600 text-sm font-medium hover:underline"
               >
                 View Book →
@@ -98,13 +98,13 @@ export default function ProfilePage() {
       <div className="space-y-4">
         {transactions?.map((trans) => (
           <div
-            key={trans.id}
+            key={trans._id}
             className="p-4 border rounded-xl shadow-sm hover:shadow transition bg-white"
           >
             <div className="flex justify-between">
               <div>
                 <p className="font-semibold text-lg">{trans.book.name}</p>
-                <p className="text-gray-600 text-sm">Transaction ID: {trans.id}</p>
+                <p className="text-gray-600 text-sm">Transaction ID: {trans._id}</p>
 
                 <div className="mt-2 text-sm text-gray-700 space-y-1">
                   <p>

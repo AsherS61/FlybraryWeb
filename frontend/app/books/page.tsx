@@ -13,7 +13,6 @@ export default function BooksPage() {
   useEffect(() => {
     async function fetchData() {
       const res = await getBooks()
-      console.log(res)
       setBooks(res.data);
     }
     fetchData();
@@ -27,8 +26,8 @@ export default function BooksPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
       {books.map((book: any) => (
           <Link
-            href={`/books/${book.id}`}
-            key={book.id}
+            href={`/books/${book?._id}`}
+            key={book._id}
             className="relative p-4 border gap-4 rounded-lg shadow hover:shadow-lg transition bg-white flex flex-col sm:flex-row"
           >
             <span
@@ -42,7 +41,7 @@ export default function BooksPage() {
             </span>
       
             <img
-              src={book.coverImage}
+              src={book.cover}
               alt={book.name}
               className="w-full sm:w-48 h-64 object-cover rounded-lg"
             />

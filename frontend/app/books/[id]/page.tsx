@@ -6,7 +6,7 @@ import Divider from "@/components/ui/Divider";
 import { borrowBook, getBook, returnBook } from "@/libs/book";
 import { BookInterface } from "@/interface/book";
 
-export default async function BookDetail({ params }: { params: { id: string } }) {
+export default async function BookDetail({ params }: { params: { _id: string } }) {
   const { data: session } = useSession();
   const [book, setBook] = useState<BookInterface>();
 
@@ -34,22 +34,22 @@ export default async function BookDetail({ params }: { params: { id: string } })
 
   useEffect(() => {
     async function fetchData() {
-      const res = await getBook(params.id);
+      const res = await getBook(params._id);
       setBook(res.data);
       setLoading(false);
     }
     fetchData();
-  }, [params.id]);
+  }, [params._id]);
 
   const handleBorrowBook = async () => {
-    const res = await borrowBook(params.id, session?.user.userId || '');
+    const res = await borrowBook(params._id, session?.user.userId || '');
     if (res.ok) {
       location.reload();
     }
   }
 
   const handleReturnBook = async () => {
-    const res = await returnBook(params.id);
+    const res = await returnBook(params._id);
     if (res.ok) {
       location.reload();
     }
@@ -64,7 +64,7 @@ export default async function BookDetail({ params }: { params: { id: string } })
     <div className="p-10 md:px-20 py-10 w-full items-center justify-center gap-5 mx-auto mt-20 flex flex-col">
       <div className="flex flex-col md:flex-row gap-10 md:gap-20 mx-auto items-center">
         <img
-          src={book?.coverImage || ''}
+          src={book?.cover || ''}
           alt={book?.name}
           className="w-50 h-80 object-cover rounded-lg shadow mb-6"
         />

@@ -1,11 +1,12 @@
 export interface BookInterface {
-  id: number,
+  _id: number,
+  ISBN: string,
   bookId: string, 
   name: string,
   desc?: string,
   author?: string,
   status?: "available" | "borrowed",
-  coverImage?: string,
+  cover?: string,
   borrowedBy?: string, 
   borrowedAt?: Date
 }

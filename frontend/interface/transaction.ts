@@ -2,7 +2,7 @@ import { User } from "next-auth";
 import { BookInterface } from "./book";
 
 export interface TransactionInterface {
-  id: string,
+  _id: string,
   book: BookInterface
   user:  User,
   borrowDate: Date,
