@@ -1,6 +1,16 @@
 const mongoose = require('mongoose');
 
 const bookSchema = new mongoose.Schema({
+    ISBN: {
+        type: String,
+        validate: {
+            validator: function(v) {
+                return v.length === 12;
+            },
+            message: props => `${props.value} is not a valid ISBN.`
+        },
+        required: [true, 'Every book has an ISBN, please enter one.']
+    },
     name: {
         type: String,
         required: [true, 'Please add a book name.'],
