@@ -9,4 +9,3 @@ router.put('/borrow/:id', borrowBook)
 router.put('/return/:id', returnBook)
 
 module.exports = router;
-export default router;
