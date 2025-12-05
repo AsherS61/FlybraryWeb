@@ -34,14 +34,14 @@ export const handler = NextAuth({
         token.accessToken = account.access_token;
         token.idToken = account.id_token;
 
-        // const userFromDB = await findOrCreateUser({
-        //   displayName: profile.name,    
-        //   picture: profile.image,
-        //   lineId: profile.sub,   
-        // });
+        const userFromDB = await findOrCreateUser({
+          displayName: profile.name,    
+          picture: profile.image,
+          lineId: profile.sub,   
+        });
         
-        // token.userId = userFromDB.id;
-        // token.role = userFromDB.role;
+        token.userId = userFromDB.id;
+        token.role = userFromDB.role;
         token.name = p.name;
         token.picture = p.picture;
         token.sub = p.sub;
