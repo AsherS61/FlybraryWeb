@@ -8,4 +8,3 @@ router.get('/user/:id', getTransactionsByUser)
 router.get('/book/:id', getTransactionsByBook)
 
 module.exports = router;
-export default router;
