@@ -1,5 +1,4 @@
 const Book = require('../models/Book.js')
-const User = require('../models/User.js');
 
 //@desc     Get all books or search books
 //@route    GET /api/v1/books
@@ -118,17 +117,7 @@ exports.borrowBook = async (req, res, next) => {
         const bookId = req.params.id;
         const userId = req.body.userId;
 
-        console.log("Borrow Book - Book ID:", bookId, "User ID:", userId);
-
         const book = await Book.findById(bookId);
-        const user = await User.findById(userId);
-
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                error: `User not found with ID: ${userId}`
-            });
-        }
 
         if (!book) {
             return res.status(404).json({
@@ -145,7 +134,7 @@ exports.borrowBook = async (req, res, next) => {
         }
 
         book.status = 'borrowed';
-        book.borrowedBy = user;
+        book.borrowedBy = userId;
         await book.save();
 
         await Transaction.create({
