@@ -8,8 +8,8 @@ dotenv.config({ path: "./config/config.env" });
 
 connectDB();
 
-const books = require('./routes/books');
-const borrows = require('./routes/borrows');
+// const books = require('./routes/books');
+// const borrows = require('./routes/borrows');
 // FIX: Import the auth router here
 const auth = require('./routes/auth'); 
 
@@ -26,9 +26,9 @@ app.use(cors())
 app.use(cookieParser());
 
 //Mount routers
-app.use("/api/v1/books", books);
+// app.use("/api/v1/books", books);
 app.use("/api/v1/auth", auth); // Now 'auth' is defined
-app.use("/api/v1/borrows", borrows);
+// app.use("/api/v1/borrows", borrows);
 
 // Define PORT and start the server (assuming you had this at the end of the original file)
 const PORT = process.env.PORT || 5000;
