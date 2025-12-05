@@ -18,8 +18,7 @@ const userSchema = new mongoose.Schema({
     },
     profile: {
         type: String,
-        default: 'https://drive.google.com/file/d/1ia9j4tSsduolkj8aa-PxHpEkCvj91QOV/view?usp=sharing'
-        
+        // default: 'https://drive.google.com/file/d/1ia9j4tSsduolkj8aa-PxHpEkCvj91QOV/view?usp=sharing'
     }
 })
 
