@@ -15,7 +15,8 @@ export default function BookDetail() {
   const [transactions, setTransactions] = useState<TransactionInterface[]>([])
   const [loading, setLoading] = useState(false);
 
-  const { data: session } = useSession();
+  const { data: session, status, update } = useSession();
+
   const params = useParams();
   const id = params.id as string; 
 
@@ -33,13 +34,16 @@ export default function BookDetail() {
     fetchData();
   }, [id]);
 
-  const handleBorrowBook = async () => {
-    if (!session?.user?.userId || !book?.bookId) {
-      console.log("Not loaded yet");
-      return;
+  useEffect(() => {
+    if (session && !session.user?.userId) {
+      console.log("🔄 Forcing session refresh to get userId...");
+      update(); 
     }
+  }, [session, update]);
 
-    await borrowBook(id || '', session.user.userId);
+  const handleBorrowBook = async () => {
+    console.log("BORROWING BOOK: ", id , "\nSession User ID: ", session?.user?.userId)
+    await borrowBook(id || '', session?.user?.userId || '');
   }
 
   const handleReturnBook = async () => {
