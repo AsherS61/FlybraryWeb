@@ -29,3 +29,5 @@ app.use(cookieParser());
 // app.use("/api/v1/books", books);
 app.use("/api/v1/auth", auth); // Now 'auth' is defined
 // app.use("/api/v1/borrows", borrows);
+
+module.exports = app;
