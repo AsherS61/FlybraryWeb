@@ -1,9 +1,21 @@
 import Divider from "@/components/ui/Divider";
+import { BookInterface } from "@/interface/book";
 import { getBooks } from "@/libs/book";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default async function BooksPage() {
-  const books = await getBooks()
+
+  const [books,setBooks] = useState<BookInterface[]>([]);
+  
+  useEffect(() => {
+    async function fetchData() {
+      const res = await getBooks()
+      console.log(res)
+      setBooks(res.data);
+    }
+    fetchData();
+  }, []);
 
   return (
     <div className="p-4 md:px-10 mt-20">

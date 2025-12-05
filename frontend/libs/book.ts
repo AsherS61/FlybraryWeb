@@ -1,5 +1,4 @@
 // import interface
-import { User } from "next-auth"
 import { useGet, usePut } from "../utils/useQuery"
 
 
