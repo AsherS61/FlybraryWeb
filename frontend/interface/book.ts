@@ -1,4 +1,4 @@
-export interface Book {
+export interface BookInterface {
   id: number,
   bookId: string, 
   name: string,
@@ -6,6 +6,6 @@ export interface Book {
   author?: string,
   status?: "available" | "borrowed",
   coverImage?: string,
-  borrowedBy?: string | null, 
-  borrowedAt?: Date | null
+  borrowedBy?: string, 
+  borrowedAt?: Date
 }

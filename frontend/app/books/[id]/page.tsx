@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Divider from "@/components/ui/Divider";
-import { getBook } from "@/libs/book";
-import { Book } from "@/interface/book";
+import { borrowBook, getBook, returnBook } from "@/libs/book";
+import { BookInterface } from "@/interface/book";
 
 export default async function BookDetail({ params }: { params: { id: string } }) {
   const { data: session } = useSession();
-  const [book, setBook] = useState<Book>();
+  const [book, setBook] = useState<BookInterface>();
 
   const [transactions, setTransactions] = useState([
     {
@@ -41,22 +41,16 @@ export default async function BookDetail({ params }: { params: { id: string } })
     fetchData();
   }, [params.id]);
 
-  async function borrowBook() {
-    const res = await fetch(`/api/books/${book?.id}/borrow`, {
-      method: "POST",
-    });
+  const handleBorrowBook = async () => {
+    const res = await borrowBook(params.id, session?.user.userId || '');
     if (res.ok) {
-      alert("Borrowed!");
       location.reload();
     }
   }
 
-  async function returnBook() {
-    const res = await fetch(`/api/books/${book?.id}/return`, {
-      method: "POST",
-    });
+  const handleReturnBook = async () => {
+    const res = await returnBook(params.id);
     if (res.ok) {
-      alert("Returned!");
       location.reload();
     }
   }
@@ -93,14 +87,14 @@ export default async function BookDetail({ params }: { params: { id: string } })
           <div className="mt-8">
               {book?.status === "available" ? (
               <button
-                  onClick={borrowBook}
+                  onClick={handleBorrowBook}
                   className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 shadow-lg"
               >
                   Borrow Book
               </button>
               ) : isBorrowedByUser ? (
               <button
-                  onClick={returnBook}
+                  onClick={handleReturnBook}
                   className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 shadow-lg"
               >
                   Return Book

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const borrowSchema = new mongoose.Schema({
+const transactionSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.ObjectId,
         ref: 'User',
@@ -19,4 +19,4 @@ const borrowSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('Borrow', borrowSchema);
+module.exports = mongoose.model('Transaction', transactionSchema);

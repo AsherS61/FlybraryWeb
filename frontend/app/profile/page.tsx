@@ -1,44 +1,32 @@
 'use client'
 
 import Divider from "@/components/ui/Divider";
+import { BookInterface } from "@/interface/book";
+import { TransactionInterface } from "@/interface/transaction";
+import { getBooksBorrowedByUser } from "@/libs/book";
+import { getTransactionsByUser } from "@/libs/transaction";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-
-// DUMMY TRANSACTIONS
-const transactions = [
-  {
-    id: "T001",
-    book: {
-      id: "QR001",
-      name: "The Art of Programming",
-    },
-    borrowDate: "2025-01-15",
-    returnDate: null,
-  },
-  {
-    id: "T002",
-    book: {
-      id: "QR002",
-      name: "Clean Code",
-    },
-    borrowDate: "2024-12-01",
-    returnDate: "2024-12-20",
-  },
-];
-
-const currentlyBorrowing = [{
-  id: "QR001",
-  name: "The Art of Programming",
-  desc: "Covers relational DBs, NoSQL, transactions, and distributed systems.",
-  author: "Hector Garcia-Molina",
-  borrowDate: "2025-01-15",
-  coverImage:
-  "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=400",
-}];
+import { useEffect, useState } from "react";
 
 export default function ProfilePage() {
   const { data : session } = useSession();
   const user = session?.user
+
+  const [transactions, setTransactions] = useState<TransactionInterface[]>([]);
+  const [booksBorrowed, setBooksBorrowed] = useState<BookInterface[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const txRes = await getTransactionsByUser(user?.userId || '');
+      setTransactions(txRes.data);
+
+      const bookRes = await getBooksBorrowedByUser(user?.userId || '');
+      setBooksBorrowed(bookRes.data);
+    }
+
+    fetchData();
+  }, [user?.userId]);
 
   return (
     <div className="max-w-4xl mx-auto p-8 space-y-6 mt-20">
@@ -69,7 +57,7 @@ export default function ProfilePage() {
       <h2 className="text-2xl font-semibold mb-4">Currently Borrowing</h2>
 
       <div className="space-y-4">
-        {currentlyBorrowing?.map((book, idx) => (
+        {booksBorrowed?.map((book, idx) => (
           <div
             key={`books-${idx}`}
             className="p-4 border rounded-xl flex gap-4 shadow-sm hover:shadow transition bg-white"
@@ -84,7 +72,7 @@ export default function ProfilePage() {
                 <p className="font-semibold text-lg">{book.name}</p>
                 <p className="font-semibold text-sm">{book.author}</p>
                 <p className="text-gray-600 text-sm">
-                  Borrowed on {book.borrowDate}
+                  Borrowed on {book?.borrowedAt?.toLocaleDateString() ?? ''}
                 </p>
               </div>
 
@@ -99,7 +87,7 @@ export default function ProfilePage() {
         ))}
       </div>
 
-      {currentlyBorrowing.length === 0 && (
+      {booksBorrowed?.length === 0 && (
         <p className="text-gray-500 mb-10">You are not borrowing any books.</p>
       )}
 
@@ -108,7 +96,7 @@ export default function ProfilePage() {
       <h2 className="text-2xl font-semibold mb-4">History</h2>
 
       <div className="space-y-4">
-        {transactions.map((trans) => (
+        {transactions?.map((trans) => (
           <div
             key={trans.id}
             className="p-4 border rounded-xl shadow-sm hover:shadow transition bg-white"
@@ -121,13 +109,11 @@ export default function ProfilePage() {
                 <div className="mt-2 text-sm text-gray-700 space-y-1">
                   <p>
                     <span className="font-medium">Borrowed:</span>{" "}
-                    {trans.borrowDate}
+                    {trans.borrowDate.toLocaleDateString()}
                   </p>
                   <p>
-                    <span className="font-medium">Returned:</span>{" "}
-                    {trans.returnDate ?? (
-                      <span className="text-red-600">Not returned</span>
-                    )}
+                    <span className="font-medium">Return By:</span>{" "}
+                    {trans.returnDate.toLocaleDateString()}
                   </p>
                 </div>
               </div>

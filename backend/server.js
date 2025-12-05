@@ -10,7 +10,7 @@ connectDB();
 
 const books = require('./routes/books.js');
 const auth = require('./routes/auth.js'); 
-// const borrows = require('./routes/borrows');
+// const transactions = require('./routes/transactions.js');
 
 
 const app = express();
@@ -27,6 +27,6 @@ app.use(cookieParser());
 //Mount routers
 app.use("/api/v1/books", books);
 app.use("/api/v1/auth", auth); 
-// app.use("/api/v1/borrows", borrows);
+// app.use("/api/v1/transactions", transactions);
 
 module.exports = app;
