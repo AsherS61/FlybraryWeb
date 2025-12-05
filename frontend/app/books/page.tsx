@@ -6,7 +6,7 @@ import { getBooks } from "@/libs/book";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export default async function BooksPage() {
+export default function BooksPage() {
 
   const [books,setBooks] = useState<BookInterface[]>([]);
   
