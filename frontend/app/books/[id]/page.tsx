@@ -6,10 +6,13 @@ import Divider from "@/components/ui/Divider";
 import { borrowBook, getBook, returnBook } from "@/libs/book";
 import { BookInterface } from "@/interface/book";
 import { useParams } from "next/navigation";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function BookDetail() {
-  const { data: session } = useSession();
+  const [user, setUser] = useState<any>();
   const [book, setBook] = useState<BookInterface>();
+  const [loading, setLoading] = useState(false);
+
   const params = useParams();
   const id = params.id as string; 
 
@@ -33,7 +36,6 @@ export default function BookDetail() {
       returnDate: "2024-11-20",
     },
   ]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -41,11 +43,17 @@ export default function BookDetail() {
       setBook(res.data);
       setLoading(false);
     }
+    setLoading(true)
     fetchData();
   }, [id]);
 
+  useEffect(() => {
+    const { data: session } = useSession();
+    setUser(session?.user);
+  }, []);
+
   const handleBorrowBook = async () => {
-    const res = await borrowBook(id, session?.user.userId || '');
+    const res = await borrowBook(id, user.userId || '');
     if (res.ok) {
       location.reload();
     }
@@ -58,10 +66,13 @@ export default function BookDetail() {
     }
   }
 
-  if (loading) return <p className="p-6 mt-20 w-full text-center justify-center">Loading...</p>;
+  if (loading) return (
+    <p className="p-6 mt-20 w-full text-center justify-center">
+      <LoadingSpinner></LoadingSpinner>Loading...</p>
+  )
   if (!book && !loading) return <p className="p-6 mt-20 w-full text-center justify-center">Book not found</p>;
 
-  const isBorrowedByUser = book?.borrowedBy === session?.user?.userId;
+  const isBorrowedByUser = book?.borrowedBy === user?.userId;
 
   return (
     <div className="p-10 md:px-20 py-10 w-full items-center justify-center gap-5 mx-auto mt-20 flex flex-col">

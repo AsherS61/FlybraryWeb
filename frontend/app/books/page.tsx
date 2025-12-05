@@ -1,6 +1,7 @@
 'use client';
 
 import Divider from "@/components/ui/Divider";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { BookInterface } from "@/interface/book";
 import { getBooks } from "@/libs/book";
 import Link from "next/link";
@@ -9,12 +10,16 @@ import { useEffect, useState } from "react";
 export default function BooksPage() {
 
   const [books,setBooks] = useState<BookInterface[]>([]);
+  const [loading, setLoading] = useState(true);
   
   useEffect(() => {
     async function fetchData() {
       const res = await getBooks()
       setBooks(res.data);
+      setLoading(false);
     }
+
+    setLoading(true);
     fetchData();
   }, []);
 
@@ -22,6 +27,8 @@ export default function BooksPage() {
     <div className="p-4 md:px-10 mt-20">
       <h1 className="text-3xl font-bold mb-4 ml-6">Books</h1>
       <Divider />
+
+      {loading && <LoadingSpinner></LoadingSpinner>}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
       {books.map((book: any) => (
