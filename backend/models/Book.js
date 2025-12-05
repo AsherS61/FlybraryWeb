@@ -20,6 +20,11 @@ const bookSchema = new mongoose.Schema({
         trim: true,
         maxlength: [50, 'Add Author name please.']
     },
+    borrowedBy: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        required: false
+    },
     status: {
         type: String,
         enum: ['available', 'borrowed', 'banned', 'missing'],
