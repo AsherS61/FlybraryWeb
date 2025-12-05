@@ -42,15 +42,13 @@ export default function BookDetail() {
   }, [session, update]);
 
   const handleBorrowBook = async () => {
-    console.log("BORROWING BOOK: ", id , "\nSession User ID: ", session?.user?.userId)
-    await borrowBook(id || '', session?.user?.userId || '');
+    const res = await borrowBook(id || '', session?.user?.userId || '');
+    if (res.success) setBook(res.data); 
   }
 
   const handleReturnBook = async () => {
     const res = await returnBook(id || '');
-    if (res.ok) {
-      location.reload();
-    }
+    if (res.success) setBook(res.data); 
   }
 
   if (loading) return (

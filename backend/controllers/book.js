@@ -119,13 +119,8 @@ exports.borrowBook = async (req, res, next) => {
         const bookId = req.params.id;
         const userId = req.body.userId;
 
-        console.log("1. Starting borrow - Book ID:", bookId, "User ID:", userId);
-
         const book = await Book.findById(bookId);
-        console.log("2. Book found:", book ? "YES" : "NO");
-
         const user = await User.findById(userId);
-        console.log("3. User found:", user ? "YES" : "NO");
 
         if (!user) {
             return res.status(404).json({
@@ -148,20 +143,16 @@ exports.borrowBook = async (req, res, next) => {
             });
         }
 
-        console.log("4. About to update book...");
         book.status = 'borrowed';
         book.borrowedBy = userId;
         await book.save();
-        console.log("5. Book saved!");
 
-        console.log("6. About to create transaction...");
         await Transaction.create({
             user: userId,
             book: bookId,
             borrowDate: new Date(),
             returnDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
         });
-        console.log("7. Transaction created!");
 
         return res.status(200).json({
             success: true,
@@ -170,11 +161,6 @@ exports.borrowBook = async (req, res, next) => {
         });
 
     } catch (err) {
-        console.error("FULL ERROR OBJECT:", err);
-        console.error("ERROR NAME:", err.name);
-        console.error("ERROR MESSAGE:", err.message);
-        console.error("ERROR STACK:", err.stack);
-
         if (err.name === 'CastError') {
             return res.status(400).json({
                 success: false,
@@ -185,7 +171,7 @@ exports.borrowBook = async (req, res, next) => {
         return res.status(500).json({
             success: false,
             error: 'Internal Server Error during book borrowing.',
-            debug: err.message  // Temporarily add this
+            debug: err.message 
         });
     }
 };
