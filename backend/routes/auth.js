@@ -4,7 +4,7 @@ import { login, getMyProfile } from "../controllers/auth.js";
 
 const router = express.Router();
 
-router.get("/me", verifySession, getMyProfile);
+// router.get("/me", verifySession, getMyProfile);
 router.post('/login', login);
 
 module.exports = router;
