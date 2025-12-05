@@ -2,22 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { Book } from "@/interface/book";
 import Divider from "@/components/ui/Divider";
+import { getBook } from "@/libs/book";
+import { Book } from "@/interface/book";
 
-export default function BookDetail({ params }: { params: { id: string } }) {
+export default async function BookDetail({ params }: { params: { id: string } }) {
   const { data: session } = useSession();
+  const [book, setBook] = useState<Book>();
 
-  const [book, setBook] = useState<Book>({
-    id: 4,
-    bookId: "QR004",
-    name: "Database Systems",
-    desc: "Covers relational DBs, NoSQL, transactions, and distributed systems.",
-    author: "Hector Garcia-Molina",
-    status: "borrowed",
-    coverImage:
-    "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=400",
-  });
   const [transactions, setTransactions] = useState([
     {
       id: "T001",
@@ -40,15 +32,14 @@ export default function BookDetail({ params }: { params: { id: string } }) {
   ]);
   const [loading, setLoading] = useState(false);
 
-//   useEffect(() => {
-//     async function fetchData() {
-//       const res = await fetch(`/api/books/${params.id}`);
-//       const data = await res.json();
-//       setBook(data);
-//       setLoading(false);
-//     }
-//     fetchData();
-//   }, [params.id]);
+  useEffect(() => {
+    async function fetchData() {
+      const res = await getBook(params.id);
+      setBook(res.data);
+      setLoading(false);
+    }
+    fetchData();
+  }, [params.id]);
 
   async function borrowBook() {
     const res = await fetch(`/api/books/${book?.id}/borrow`, {
@@ -85,22 +76,22 @@ export default function BookDetail({ params }: { params: { id: string } }) {
         />
   
         <div className="">
-          <h1 className="text-4xl font-bold">{book.name}</h1>
-          <p className="text-gray-600 mt-2 text-lg">by {book.author}</p>
+          <h1 className="text-4xl font-bold">{book?.name}</h1>
+          <p className="text-gray-600 mt-2 text-lg">by {book?.author}</p>
   
-          <p className="mt-6 text-gray-700">{book.desc}</p>
+          <p className="mt-6 text-gray-700">{book?.desc}</p>
    
           <div className="mt-6">
               <span className={`px-4 py-2 rounded-full text-sm shadow-md ${
-                  book.status === "available"
+                  book?.status === "available"
                   ? "bg-green-100 text-green-700"
                   : "bg-red-100 text-red-700"}`}
               >
-                {book.status === "available" ? "Available" : "Borrowed"}
+                {book?.status === "available" ? "Available" : "Borrowed"}
               </span>
           </div>
           <div className="mt-8">
-              {book.status === "available" ? (
+              {book?.status === "available" ? (
               <button
                   onClick={borrowBook}
                   className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 shadow-lg"

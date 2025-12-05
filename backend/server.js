@@ -8,10 +8,9 @@ dotenv.config({ path: "./.env" });
 
 connectDB();
 
-// const books = require('./routes/books');
-// const borrows = require('./routes/borrows');
-// FIX: Import the auth router here
+const books = require('./routes/books.js');
 const auth = require('./routes/auth.js'); 
+// const borrows = require('./routes/borrows');
 
 
 const app = express();
@@ -26,8 +25,8 @@ app.use(cors())
 app.use(cookieParser());
 
 //Mount routers
-// app.use("/api/v1/books", books);
-app.use("/api/v1/auth", auth); // Now 'auth' is defined
+app.use("/api/v1/books", books);
+app.use("/api/v1/auth", auth); 
 // app.use("/api/v1/borrows", borrows);
 
 module.exports = app;

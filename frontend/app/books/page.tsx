@@ -1,47 +1,9 @@
 import Divider from "@/components/ui/Divider";
+import { getBooks } from "@/libs/book";
 import Link from "next/link";
 
 export default async function BooksPage() {
-
-  const books = [
-  {
-      id: "QR001",
-      name: "The Art of Programming",
-      desc: "A comprehensive guide to algorithms, data structures, and software engineering principles.",
-      author: "Donald Knuth",
-      status: "available",
-      coverImage:
-      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=400",
-  },
-  {
-      id: "QR002",
-      name: "Clean Code",
-      desc: "A handbook of agile software craftsmanship focusing on writing clean, maintainable code.",
-      author: "Robert C. Martin",
-      status: "borrowed",
-      coverImage:
-      "https://images.unsplash.com/photo-1528207776546-365bb710ee93?q=80&w=400",
-  },
-  {
-      id: "QR003",
-      name: "Introduction to AI",
-      desc: "A modern introduction to artificial intelligence concepts, models, and applications.",
-      author: "Stuart Russell",
-      status: "available",
-      coverImage:
-      "https://images.unsplash.com/photo-1519682577862-22b62b24e493?q=80&w=400",
-  },
-  {
-      id: "QR004",
-      name: "Database Systems",
-      desc: "Covers relational DBs, NoSQL, transactions, and distributed systems.",
-      author: "Hector Garcia-Molina",
-      status: "borrowed",
-      coverImage:
-      "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=400",
-  },
-  ];
-
+  const books = await getBooks()
 
   return (
     <div className="p-4 md:px-10 mt-20">
