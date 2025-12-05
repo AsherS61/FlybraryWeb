@@ -28,7 +28,7 @@ export default function BooksPage() {
       <h1 className="text-3xl font-bold mb-4 ml-6">Books</h1>
       <Divider />
 
-      {loading && <LoadingSpinner className="mt-10 p-10 text-center justify-center w-full"></LoadingSpinner>}
+      {loading && <LoadingSpinner className="mt-10 p-10 text-center justify-center"></LoadingSpinner>}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
       {books.map((book: any) => (

@@ -53,7 +53,7 @@ export default function BookDetail() {
 
   if (loading) return (
     <p className="p-6 mt-20 w-full text-center justify-center">
-      <LoadingSpinner className="mt-10 p-10 text-center justify-center w-full"></LoadingSpinner>
+      <LoadingSpinner className="mt-10 p-10 text-center justify-center"></LoadingSpinner>
       Loading...
     </p>
   )
