@@ -26,6 +26,7 @@ app.use(cors({
   credentials: true
 }));
 
+
 //Cookie parser
 app.use(cookieParser());
 
