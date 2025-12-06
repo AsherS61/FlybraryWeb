@@ -41,25 +41,25 @@ export const handler = NextAuth({
       console.log("Line Account:", account);
       console.log("LINE profile:", profile);
       
-      // if (account && profile) {
-      //   token.accessToken = account.access_token;
-      //   token.idToken = account.id_token;
-      //   const lineProfile = profile as LineProfile;
+      if (account && profile) {
+        token.accessToken = account.access_token;
+        token.idToken = account.id_token;
+        const lineProfile = profile as LineProfile;
 
-      //   const userFromDB = await findOrCreateUser({
-      //     displayName: lineProfile.name,    
-      //     picture: lineProfile.picture,
-      //     lineId: lineProfile.sub,   
-      //   });
+        const userFromDB = await findOrCreateUser({
+          displayName: lineProfile.name,    
+          picture: lineProfile.picture,
+          lineId: lineProfile.sub,   
+        });
 
-      //   console.log("USER: " , userFromDB);
+        console.log("USER: " , userFromDB);
         
-      //   token.userId = userFromDB.data?._id;
-      //   token.role = userFromDB.data?.role;
-      //   token.name = userFromDB.data?.name;
-      //   token.picture = userFromDB.data?.profile;
-      //   token.sub = userFromDB.data?.lineId;
-      // }
+        token.userId = userFromDB.data?._id;
+        token.role = userFromDB.data?.role;
+        token.name = userFromDB.data?.name;
+        token.picture = userFromDB.data?.profile;
+        token.sub = userFromDB.data?.lineId;
+      }
 
       console.log("TOKEN:", token)
 

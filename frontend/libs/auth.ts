@@ -22,6 +22,6 @@ export async function findOrCreateUser(profile : any) {
       "Content-Type": "application/json",
       Accept: 'application/json',
     },
-    body: JSON.stringify({profile})
+    body: JSON.stringify(profile)
   })
 }
