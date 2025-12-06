@@ -52,11 +52,9 @@ export default function BookDetail() {
   }
 
   if (loading) return (
-    <p className="p-6 mt-20 w-full text-center justify-center">
-      <div className="flex justify-center mt-10 p-10 h-30 w-30">
-        <LoadingSpinner className="!size-24"/>
-      </div>
-    </p>
+    <div className="flex justify-center mt-30 p-16 h-30 w-30 text-center">
+      <LoadingSpinner className="!size-24"/>
+    </div>
   )
   if (!book && !loading) return <p className="p-6 mt-20 w-full text-center justify-center">Book not found</p>;
 
