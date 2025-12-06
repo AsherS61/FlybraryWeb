@@ -130,12 +130,12 @@ export default function BookDetail() {
                 <div className="mt-2 text-sm text-gray-700 space-y-1">
                   <p>
                     <span className="font-medium">Borrowed:</span>{" "}
-                    {new Date(trans.borrowDate).toLocaleDateString()}
+                    {(trans?.borrowDate).toString()}
                   </p>
                   <p>
                     <span className="font-medium">Returned:</span>{" "}
                     {trans.returnDate ? (
-                      new Date(trans.returnDate).toLocaleDateString()
+                      (trans?.borrowDate).toString()
                     ) : (
                       <span className="text-red-600">Not returned</span>
                     )}
