@@ -71,9 +71,6 @@ export default function ProfilePage() {
               <div className="space-y-1">
                 <p className="font-semibold text-lg">{book.name}</p>
                 <p className="font-semibold text-sm">{book.author}</p>
-                <p className="text-gray-600 text-sm">
-                  Borrowed on {book?.borrowedAt?.toLocaleDateString() ?? ''}
-                </p>
               </div>
 
               <a

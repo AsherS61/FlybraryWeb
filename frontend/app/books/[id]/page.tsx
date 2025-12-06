@@ -91,7 +91,7 @@ export default function BookDetail() {
               <button
                   onClick={handleBorrowBook}
                   className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 shadow-lg"
-                  disabled={!session?.user}
+                  disabled={!session?.user.userId}
               >
                   Borrow Book
               </button>
