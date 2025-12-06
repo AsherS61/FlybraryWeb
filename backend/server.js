@@ -28,4 +28,8 @@ app.use("/api/v1/books", books);
 app.use("/api/v1/auth", auth); 
 app.use("/api/v1/transactions", transactions);
 
+app.listen(process.env.PORT || 3000, () => {
+  console.log('Server running');
+});
+
 module.exports = app;

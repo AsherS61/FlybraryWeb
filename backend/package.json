@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "npm dev --turbopack",
     "build": "next build",
     "start": "next start",
     "server": "node server.js"
