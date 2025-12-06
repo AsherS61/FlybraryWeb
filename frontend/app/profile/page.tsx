@@ -106,11 +106,11 @@ export default function ProfilePage() {
                 <div className="mt-2 text-sm text-gray-700 space-y-1">
                   <p>
                     <span className="font-medium">Borrowed:</span>{" "}
-                    {trans.borrowDate.toDateString()}
+                    {trans.borrowDate.toString()}
                   </p>
                   <p>
                     <span className="font-medium">Return By:</span>{" "}
-                    {trans.returnDate.toDateString()}
+                    {trans.returnDate.toString()}
                   </p>
                 </div>
               </div>
