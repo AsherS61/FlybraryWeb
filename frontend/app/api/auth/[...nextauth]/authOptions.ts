@@ -3,11 +3,15 @@ import { NextAuthOptions, Session } from "next-auth";
 import LineProvider from "next-auth/providers/line";
 
 interface LineProfile {
+  iss: string;
   sub: string;
+  aud: string;
+  exp: number;
+  iat: number;
+  amr: string[];
   name: string;
   picture: string;
   email?: string;
-  lineId: string;
 }
 
 export const authOptions: NextAuthOptions = {
