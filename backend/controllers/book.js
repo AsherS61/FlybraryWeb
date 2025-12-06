@@ -3,6 +3,15 @@ const User = require('../models/User');
 const Transaction = require('../models/Transaction.js')
 const mqttClient = require('../utils/mqtt.js');
 
+const publishMqtt = (client, topic, payload = '') => {
+    return new Promise((resolve, reject) => {
+        client.publish(topic, payload, (err) => {
+            if (err) reject(err);
+            else resolve();
+        });
+    });
+};
+
 //@desc     Get all books or search books
 //@route    GET /api/v1/books
 //@access   Public
@@ -144,19 +153,6 @@ exports.borrowBook = async (req, res, next) => {
             });
         }
 
-        // Mark book as borrowed
-        book.status = 'borrowed';
-        book.borrowedBy = user;
-        await book.save();
-
-        // Create transaction (this has slot/machine info if needed)
-        const tx = await Transaction.create({
-            user: userId,
-            book: bookId,
-            borrowDate: new Date(),
-            returnDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-        });
-
         // ---- MQTT PUBLISH TO ESP32 ----
         // you MUST decide which machine/book position this book belongs to
         const slot = book.slot;        // e.g. 0–3
@@ -171,8 +167,19 @@ exports.borrowBook = async (req, res, next) => {
             isbn: book.isbn
         });
 
-        mqttClient.publish(topic, payload);
+        await publishMqtt(mqttClient, topic, payload);
         console.log("MQTT Published:", topic, payload);
+
+        book.status = 'borrowed';
+        book.borrowedBy = user;
+        await book.save();
+
+        const tx = await Transaction.create({
+            user: userId,
+            book: bookId,
+            borrowDate: new Date(),
+            returnDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+        });
 
         return res.status(200).json({
             success: true,
@@ -220,6 +227,19 @@ exports.returnBook = async (req, res, next) => {
             });
         }
 
+        // ---- MQTT PUBLISH TO ESP32 Camera to get Picture ----
+        const machineId = book.machine; // e.g. "F1"
+        const topic = `flybrary/${machineId}/return`;
+
+        await publishMqtt(mqttClient, topic);
+        console.log("MQTT Published:", topic);
+
+        // ---- Send picture to check in Flask ----
+        //
+        //
+
+        // if everything is ok 
+        
         book.status = 'available';
         book.borrowedBy = null;
         await book.save();

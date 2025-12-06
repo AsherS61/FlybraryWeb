@@ -9,8 +9,13 @@ import { useParams } from "next/navigation";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { getTransactionsByBook } from "@/libs/transaction";
 import { TransactionInterface } from "@/interface/transaction";
+import { useModal } from "@/providers/ModalProvider";
+import LoadingModal from "@/components/common/LoadingModal";
+import AlertModal from "@/components/common/AlertModal";
 
 export default function BookDetail() {
+  const {openModal, closeModal} = useModal();
+
   const [book, setBook] = useState<BookInterface>();
   const [transactions, setTransactions] = useState<TransactionInterface[]>([])
   const [loading, setLoading] = useState(false);
@@ -42,14 +47,56 @@ export default function BookDetail() {
   }, [session, update]);
 
   const handleBorrowBook = async () => {
-    const res = await borrowBook(id || '', session?.user?.userId || '');
-    if (res.success) location.reload();
-  }
+    openModal(
+      <LoadingModal
+        id='loading'
+        message='กำลังทำการ...'
+      />
+    )
+    try {
+      const res = await borrowBook(id || '', session?.user?.userId || '');
+        if (res.success) {
+          closeModal();
+          location.reload();
+        }
+      } catch (error) {
+        closeModal();
+        openModal(
+          <AlertModal
+            id='error'
+            color='red'
+            confirmText='ยืมหนังสือไม่สำเร็จ'
+            onConfirm={() => closeModal()}
+          />
+        )
+      }
+    }
 
   const handleReturnBook = async () => {
-    const res = await returnBook(id || '');
-    if (res.success) location.reload();
-  }
+    openModal(
+      <LoadingModal
+        id='loading'
+        message='กำลังคืนหนังสือ...'
+      />
+    )
+    try {
+      const res = await returnBook(id || '');
+        if (res.success) {
+          closeModal();
+          location.reload();
+        }
+      } catch (error) {
+        closeModal();
+        openModal(
+          <AlertModal
+            id='error'
+            color='red'
+            confirmText='คืนหนังสือไม่สำเร็จ'
+            onConfirm={() => closeModal()}
+          />
+        )
+      }
+    }
 
   if (loading) return (
     <div className="flex justify-center mt-30 p-16 h-30 w-30 text-center">
