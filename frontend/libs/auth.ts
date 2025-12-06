@@ -17,7 +17,7 @@ export async function logout() {
 // POST
 //---------------------
 export async function findOrCreateUser(profile: any) {
-  const url = process.env.BACKEND_URL + "/api/v1/auth/login";
+  const url = process.env.NEXT_PUBLIC_BACKEND_URL + "/api/v1/auth/login";
 
   const res = await fetch(url, {
     method: "POST",
