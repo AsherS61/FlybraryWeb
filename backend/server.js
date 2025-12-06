@@ -2,7 +2,6 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./config/db");
-const cors = require('cors')
 
 dotenv.config({ path: "./.env" });
 
@@ -17,8 +16,6 @@ const app = express();
 //body parser
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
-
-app.use(cors())
 
 //Cookie parser
 app.use(cookieParser());
