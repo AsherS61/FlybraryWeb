@@ -1,4 +1,4 @@
-const Esp = require("../models/esp.js");
+const Esp = require("../models/Esp.js");
 
 //@desc     Get the latest temperature entry
 //@route    GET /api/v1/esp/getTemperature
@@ -29,7 +29,6 @@ exports.getTemperature = async (req, res, next) => {
         });
     }
 };
-
 
 //@desc     Update temperature entry
 //@route    POST /api/v1/esp/postTemperature
