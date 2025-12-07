@@ -36,7 +36,7 @@ app.use(cookieParser());
 app.use("/api/v1/books", books);
 app.use("/api/v1/auth", auth); 
 app.use("/api/v1/transactions", transactions);
-app.use("/api/cron", cronRoutes);
+app.use("/api/v1/cron", cronRoutes);
 
 
 app.listen(process.env.PORT || 3000, () => {
