@@ -93,11 +93,11 @@ exports.getBook = async (req, res, next) => {
 //@access   Private
 exports.getBooksBorrowedByUser = async (req, res, next) => {
     try {
-        const books = User.find({ _id: req.params.id }).populate('booksReturned')
+        const user = await User.find({ _id: req.params.id }).populate('booksReturned')
         
         return res.status(200).json({
             success: true,
-            data: books
+            data: user.booksReturned
         });
     } catch (err) {
         console.error(`Error fetching books for User ID ${req.params.id}:`, err.message);
