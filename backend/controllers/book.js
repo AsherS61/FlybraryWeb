@@ -155,14 +155,12 @@ exports.borrowBook = async (req, res, next) => {
 
         // ---- MQTT PUBLISH TO ESP32 ----
         // you MUST decide which machine/book position this book belongs to
-        const slot = book.slot;        // e.g. 0–3
-        const machineId = book.machine; // e.g. "F1"
+        const machineId = "F1";
 
         const topic = `flybrary/${machineId}/borrow`;
         const payload = JSON.stringify({
             transactionId: tx._id,
             bookId: bookId,
-            slot: slot,
             userId: userId,
             isbn: book.isbn
         });
@@ -228,7 +226,7 @@ exports.returnBook = async (req, res, next) => {
         }
 
         // ---- MQTT PUBLISH TO ESP32 Camera to get Picture ----
-        const machineId = book.machine; // e.g. "F1"
+        const machineId = "F1";
         const topic = `flybrary/${machineId}/return`;
 
         await publishMqtt(mqttClient, topic);
