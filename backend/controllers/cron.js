@@ -3,7 +3,7 @@ const Transaction = require("../models/Transaction");
 
 const sendLineMessage = async (userId, message) => {
     try {
-      await axios.post(
+      const res = await axios.post(
         "https://api.line.me/v2/bot/message/push",
         {
           to: userId,
@@ -16,6 +16,8 @@ const sendLineMessage = async (userId, message) => {
           },
         }
       );
+
+      return res.data;
     } catch (err) {
       console.log("LINE API error:", err.response?.data || err.message);
     }
