@@ -1,5 +1,5 @@
 const express = require("express");
-const { getBooks, getBook, getBooksBorrowedByUser, borrowBook, returnBook } = require("../controllers/book.js");
+const { getBooks, getBook, getBooksBorrowedByUser, borrowBook, returnBook, sendImage } = require("../controllers/book.js");
 const router = express.Router();
 
 router.get('/', getBooks)
