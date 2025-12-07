@@ -5,11 +5,15 @@ const Transaction = require('../models/Transaction.js')
 //@access   Public
 exports.getTransactions = async (req, res, next) => {
     try {
-        transaction = await Transaction.find({});
+        const limit = parseInt(req.query.limit) || 6;
+
+        const transactions = await Transaction.find({})
+            .sort({ createdAt: -1 }) 
+            .limit(limit);
 
         return res.status(200).json({
             success: true,
-            data: transaction
+            data: transactions
         })
 
     } catch (err) {
@@ -67,7 +71,7 @@ exports.getTransaction = async (req, res, next) => {
 exports.getTransactionsByUser = async (req, res, next) => {
     try {
         const userId = req.params.id;
-        const transactions = await Transaction.find({ user: userId }).populate('book');
+        const transactions = await Transaction.find({ user: userId }).sort({ createdAt: -1 }).limit(10).populate('book');
 
         if (!transactions) {
             return res.status(404).json({
@@ -104,7 +108,7 @@ exports.getTransactionsByUser = async (req, res, next) => {
 exports.getTransactionsByBook = async (req, res, next) => {
     try {
         const bookId = req.params.id;
-        const transactions = await Transaction.find({ book: bookId });
+        const transactions = await Transaction.find({ book: bookId }).sort({ createdAt: -1 }).limit(10);
 
         if (!transactions) {
             return res.status(404).json({

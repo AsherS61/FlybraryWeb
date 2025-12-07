@@ -12,7 +12,8 @@ const transactionSchema = new mongoose.Schema({
         required: true
     },
     borrowDate: { type: Date, required: true },
-    returnDate: { type: Date, required: true },
+    returnBy: { type: Date, required: true },
+    returnDate: { type: Date },
     createdAt: {
         type: Date,
         default: Date.now

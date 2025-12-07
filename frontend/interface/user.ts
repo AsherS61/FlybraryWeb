@@ -1,5 +1,7 @@
 export interface lineUserInterface {
-    userid: string,
+    _id: string,
+    lineId: string,
+    role: string,
     name: string,
-    picture: string
+    profile: string,
 }

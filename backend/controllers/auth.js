@@ -4,7 +4,7 @@ const User = require('../models/User.js');
 //@route POST /api/v1/auth/login
 exports.login = async (req, res, next) => {
   try {
-    const {lineId, displayName, picture} = req.body;
+    const {displayName, picture, lineId} = req.body;
     const user = await User.findOne({
       lineId: lineId
     });

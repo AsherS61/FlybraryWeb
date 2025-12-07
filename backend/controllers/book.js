@@ -1,5 +1,16 @@
 const Book = require('../models/Book.js')
-const User = require('../models/User.js');
+const User = require('../models/User');  
+const Transaction = require('../models/Transaction.js')
+const mqttClient = require('../utils/mqtt.js');
+
+const publishMqtt = (client, topic, payload = '') => {
+    return new Promise((resolve, reject) => {
+        client.publish(topic, payload, (err) => {
+            if (err) reject(err);
+            else resolve();
+        });
+    });
+};
 
 //@desc     Get all books or search books
 //@route    GET /api/v1/books
@@ -110,9 +121,7 @@ exports.getBooksBorrowedByUser = async (req, res, next) => {
 };
 
 
-//@desc     Update book status to borrowed
-//@route    Put /api/v1/books/borrow/:id
-//@access   Private
+
 exports.borrowBook = async (req, res, next) => {
     try {
         const bookId = req.params.id;
@@ -144,15 +153,27 @@ exports.borrowBook = async (req, res, next) => {
             });
         }
 
+        // ---- MQTT PUBLISH TO ESP32 ----
+        // you MUST decide which machine/book position this book belongs to
+        const machineId = "F1";
+
+        const topic = `flybrary/${machineId}/borrow`;
+        const payload = JSON.stringify({
+            isbn: book.ISBN
+        });
+
+        await publishMqtt(mqttClient, topic, payload);
+        console.log("MQTT Published:", topic, payload);
+
         book.status = 'borrowed';
         book.borrowedBy = user;
         await book.save();
 
-        await Transaction.create({
+        const tx = await Transaction.create({
             user: userId,
             book: bookId,
             borrowDate: new Date(),
-            returnDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+            returnBy: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
         });
 
         return res.status(200).json({
@@ -161,7 +182,7 @@ exports.borrowBook = async (req, res, next) => {
             message: 'Book borrowed successfully'
         });
 
-    } catch (err) {
+    } catch (err) { 
         console.error(`Error borrowing book with ID ${req.params.id}:`, err.message);
 
         if (err.name === 'CastError') {
@@ -178,6 +199,7 @@ exports.borrowBook = async (req, res, next) => {
     }
 };
 
+
 //@desc     Update book status to available
 //@route    Put /api/v1/books/return/:id
 //@access   Private
@@ -185,6 +207,14 @@ exports.returnBook = async (req, res, next) => {
     try {
         const bookId = req.params.id;
         const book = await Book.findById(bookId);
+        const tx = await Transaction.findOne({ book: bookId });
+
+        if (!tx) {
+            return res.status(404).json({
+                success: false,
+                error: `Transaction not found for Book ID: ${bookId}`
+            });
+        }
 
         if (!book) {
             return res.status(404).json({
@@ -200,9 +230,25 @@ exports.returnBook = async (req, res, next) => {
             });
         }
 
+        // ---- MQTT PUBLISH TO ESP32 Camera to get Picture ----
+        const machineId = "F1";
+        const topic = `flybrary/${machineId}/return`;
+
+        await publishMqtt(mqttClient, topic);
+        console.log("MQTT Published:", topic);
+
+        // ---- Send picture to check in Flask ----
+        //
+        //
+
+        // if everything is ok 
+        
         book.status = 'available';
         book.borrowedBy = null;
         await book.save();
+
+        tx.returnDate = new Date();
+        await tx.save();
         
         return res.status(200).json({
             success: true,

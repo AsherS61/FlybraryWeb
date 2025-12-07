@@ -4,7 +4,7 @@ export interface BookInterface {
   bookId: string, 
   name: string,
   desc?: string,
-  author?: string,
+  author: string,
   status?: "available" | "borrowed",
   cover?: string,
   borrowedBy?: string, 

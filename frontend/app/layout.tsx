@@ -9,7 +9,7 @@ import { BannerProvider } from '../providers/BannerProvider'
 import { SearchProvider } from '../providers/SearchProvider'
 import { SnackbarProvider } from '../providers/SnackbarProvider'
 import { getServerSession } from 'next-auth'
-import { handler } from './api/auth/[...nextauth]/route'
+import { authOptions } from './api/auth/[...nextauth]/authOptions'
 
 const notoSansThai = Noto_Sans_Thai({
   subsets: ['latin', 'thai'], // Specify the Thai subset for proper character display
@@ -27,7 +27,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const session = await getServerSession(handler)
+  const session = await getServerSession(authOptions)
 
   return (
     <html lang='en'>
@@ -38,7 +38,7 @@ export default async function RootLayout({
         />
       </head>
       <body className={`${notoSansThai.className} antialiased`}>
-      <NextAuthProvider session={session}>
+      <NextAuthProvider session={session} >
           <SearchProvider>
             <SnackbarProvider>
               <ModalProvider>

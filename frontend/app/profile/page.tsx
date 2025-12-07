@@ -1,6 +1,7 @@
 'use client'
 
 import Divider from "@/components/ui/Divider";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { BookInterface } from "@/interface/book";
 import { TransactionInterface } from "@/interface/transaction";
 import { getBooksBorrowedByUser } from "@/libs/book";
@@ -13,6 +14,9 @@ export default function ProfilePage() {
   const { data : session } = useSession();
   const user = session?.user
 
+  const [booksLoading, setBooksLoading] = useState(false);
+  const [transactionLoading, setTransactionLoading] = useState(false);
+
   const [transactions, setTransactions] = useState<TransactionInterface[]>([]);
   const [booksBorrowed, setBooksBorrowed] = useState<BookInterface[]>([]);
 
@@ -23,8 +27,13 @@ export default function ProfilePage() {
 
       const bookRes = await getBooksBorrowedByUser(user?.userId || '');
       setBooksBorrowed(bookRes.data);
+
+      setBooksLoading(false)
+      setTransactionLoading(false)
     }
 
+    setBooksLoading(true)
+    setTransactionLoading(true)
     fetchData();
   }, [user?.userId]);
 
@@ -69,11 +78,8 @@ export default function ProfilePage() {
             />
             <div className="flex flex-col justify-between">
               <div className="space-y-1">
-                <p className="font-semibold text-lg">{book.name}</p>
-                <p className="font-semibold text-sm">{book.author}</p>
-                <p className="text-gray-600 text-sm">
-                  Borrowed on {book?.borrowedAt?.toLocaleDateString() ?? ''}
-                </p>
+                <p className="font-semibold text-lg">{book?.name}</p>
+                <p className="font-semibold text-sm">{book?.author}</p>
               </div>
 
               <a
@@ -86,8 +92,12 @@ export default function ProfilePage() {
           </div>
         ))}
       </div>
+      
+      {booksLoading && (
+        <LoadingSpinner></LoadingSpinner>
+      )}
 
-      {booksBorrowed?.length === 0 && (
+      {(booksBorrowed?.length === 0 && !booksLoading) && (
         <p className="text-gray-500 mb-10">You are not borrowing any books.</p>
       )}
 
@@ -103,17 +113,26 @@ export default function ProfilePage() {
           >
             <div className="flex justify-between">
               <div>
-                <p className="font-semibold text-lg">{trans.book.name}</p>
-                <p className="text-gray-600 text-sm">Transaction ID: {trans._id}</p>
+                <p className="font-semibold text-lg">{trans?.book.name}</p>
+                <p className="text-gray-600 text-sm">Transaction ID: {trans?._id}</p>
 
                 <div className="mt-2 text-sm text-gray-700 space-y-1">
+                <span
+                  className={`absolute top-3 right-3 px-3 py-1 text-sm rounded-full shadow-md ${
+                    trans?.book.status === "available"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-red-100 text-red-700"
+                  }`}
+                >
+                  {trans?.book.status === "available" ? "Available" : "Borrowed"}
+                </span>
                   <p>
                     <span className="font-medium">Borrowed:</span>{" "}
-                    {trans.borrowDate.toLocaleDateString()}
+                    {trans?.borrowDate.toString()}
                   </p>
                   <p>
                     <span className="font-medium">Return By:</span>{" "}
-                    {trans.returnDate.toLocaleDateString()}
+                    {trans?.returnBy.toString()}
                   </p>
                 </div>
               </div>
@@ -122,7 +141,11 @@ export default function ProfilePage() {
         ))}
       </div>
 
-      {transactions.length === 0 && (
+      {transactionLoading && (
+        <LoadingSpinner></LoadingSpinner>
+      )}
+
+      {(transactions.length === 0 && !transactionLoading) && (
         <p className="text-gray-500 text-center mt-10">
           No borrowing history yet.
         </p>

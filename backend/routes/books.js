@@ -3,8 +3,8 @@ const { getBooks, getBook, getBooksBorrowedByUser, borrowBook, returnBook } = re
 const router = express.Router();
 
 router.get('/', getBooks)
-router.get('/:id', getBook)
 router.get('/user/:id', getBooksBorrowedByUser)
+router.get('/:id', getBook)  
 router.put('/borrow/:id', borrowBook)
 router.put('/return/:id', returnBook)
 
