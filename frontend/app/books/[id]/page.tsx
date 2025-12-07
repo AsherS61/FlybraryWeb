@@ -175,12 +175,12 @@ export default function BookDetail() {
                 <div className="mt-2 text-sm text-gray-700 space-y-1">
                   <p>
                     <span className="font-medium">Borrowed:</span>{" "}
-                    {(trans?.borrowDate).toString()}
+                    {(trans?.borrowDate || '').toString()}
                   </p>
                   <p>
                     <span className="font-medium">Returned:</span>{" "}
                     {trans.returnDate ? (
-                      (trans?.returnDate).toString()
+                      (trans?.returnDate || '').toString()
                     ) : (
                       <span className="text-red-600">Not returned</span>
                     )}

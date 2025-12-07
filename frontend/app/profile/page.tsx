@@ -128,11 +128,11 @@ export default function ProfilePage() {
                 </span>
                   <p>
                     <span className="font-medium">Borrowed:</span>{" "}
-                    {trans?.borrowDate.toString()}
+                    {(trans?.borrowDate || '').toString()}
                   </p>
                   <p>
                     <span className="font-medium">Return By:</span>{" "}
-                    {trans?.returnBy.toString()}
+                    {(trans?.returnBy || '').toString()}
                   </p>
                 </div>
               </div>

@@ -174,7 +174,7 @@ export default function LibraryDashboard() {
                           <p className="font-medium text-gray-800">{transaction?.user.name}</p>
                           <p className="text-sm text-gray-600 line-clamp-1">{transaction?.book.name}</p>
                           <p className="text-xs text-gray-500 mt-1">
-                            Due: {transaction?.returnBy.toString()}
+                            Due: {(transaction?.returnBy || '').toString()}
                           </p>
                         </div>
                       </div>
