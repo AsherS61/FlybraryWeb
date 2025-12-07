@@ -20,14 +20,7 @@ const app = express();
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-app.use(cors({
-  origin: [
-    'https://flybrary-web-auto-frontend.vercel.app',
-    'http://localhost:3000'
-  ],
-  credentials: true
-}));
-
+app.use(cors());
 
 //Cookie parser
 app.use(cookieParser());
