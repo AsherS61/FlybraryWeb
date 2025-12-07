@@ -15,7 +15,7 @@
   "crons": [
     {
       "path": "/api/cron/check-return",
-      "schedule": "0 * * * *" 
+      "schedule": "0 1 * * *" 
     }
   ]
 }
