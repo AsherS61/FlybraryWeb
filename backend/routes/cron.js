@@ -38,7 +38,7 @@ router.get("/check-return", async (req, res) => {
       const user = await User.findById(trx.userId);
       if (!user?.lineId) continue;
 
-      const msg = `📢 Reminder: Your borrowed item is due soon.\nReturn by: ${trx.returnBy.toLocaleString()}`;
+      const msg = `Reminder: Your borrowed item is due soon.\nReturn by: ${trx.returnBy.toLocaleString()}`;
       await sendLineMessage(user.lineId, msg);
 
       trx.notified = true;
