@@ -129,15 +129,6 @@ export default function LibraryDashboard() {
                           <h3 className="font-semibold text-gray-800 mb-1 line-clamp-2">{book?.name}</h3>
                           <p className="text-sm text-gray-600 mb-2">by {book?.author}</p>
                           <p className="text-xs text-gray-500 mb-2">ISBN: {book?.ISBN}</p>
-                          <span
-                            className={`absolute top-3 right-3 px-3 py-1 text-sm rounded-full shadow-md ${
-                              book.status === "available"
-                                ? "bg-green-100 text-green-700"
-                                : "bg-red-100 text-red-700"
-                            }`}
-                          >
-                            {book?.status === "available" ? "Available" : "Borrowed"}
-                          </span>
                         </div>
                       </div>
                     </div>
@@ -173,9 +164,6 @@ export default function LibraryDashboard() {
                         <div className="flex-1">
                           <p className="font-medium text-gray-800">{transaction?.user.name}</p>
                           <p className="text-sm text-gray-600 line-clamp-1">{transaction?.book.name}</p>
-                          <p className="text-xs text-gray-500 mt-1">
-                            Due: {(transaction?.returnBy || '').toString()}
-                          </p>
                         </div>
                       </div>
                     </div>

@@ -45,11 +45,12 @@ export async function borrowBook(id : string, userId : string) {
     })
   }
 
-export async function returnBook(id : string) {
+export async function returnBook(id : string, userId : string) {
     return usePut(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/books/return/${id}`, {
       headers: {
         'Content-Type': 'application/json',
       },
-      
+      body: JSON.stringify({ userId: userId }),
+      credentials: "include",
     })
 }

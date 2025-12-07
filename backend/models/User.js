@@ -19,7 +19,14 @@ const userSchema = new mongoose.Schema({
     profile: {
         type: String,
         // default: 'https://drive.google.com/file/d/1ia9j4tSsduolkj8aa-PxHpEkCvj91QOV/view?usp=sharing'
+    },
+    booksReturned: [
+    {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Book',
+        required: false  
     }
+    ]
 })
 
 module.exports = mongoose.model('User', userSchema);

@@ -46,32 +46,6 @@ export default function BookDetail() {
     }
   }, [session, update]);
 
-  const handleBorrowBook = async () => {
-    openModal(
-      <LoadingModal
-        id='loading'
-        message='กำลังทำการ...'
-      />
-    )
-    try {
-      const res = await borrowBook(id || '', session?.user?.userId || '');
-        if (res.success) {
-          closeModal();
-          location.reload();
-        }
-      } catch (error) {
-        closeModal();
-        openModal(
-          <AlertModal
-            id='error'
-            color='red'
-            confirmText='ยืมหนังสือไม่สำเร็จ'
-            onConfirm={() => closeModal()}
-          />
-        )
-      }
-    }
-
   const handleReturnBook = async () => {
     openModal(
       <LoadingModal
@@ -80,7 +54,7 @@ export default function BookDetail() {
       />
     )
     try {
-      const res = await returnBook(id || '');
+      const res = await returnBook(id || '',  session?.user?.userId || '');
         if (res.success) {
           closeModal();
           location.reload();
@@ -105,8 +79,6 @@ export default function BookDetail() {
   )
   if (!book && !loading) return <p className="p-6 mt-20 w-full text-center justify-center">Book not found</p>;
 
-  const isBorrowedByUser = book?.borrowedBy === session?.user?.userId;
-
   return (
     <div className="p-10 md:px-20 py-10 w-full xl:w-[60%] items-center justify-center gap-5 mx-auto mt-20 flex flex-col">
       <div className="flex flex-col md:flex-row gap-10 md:gap-20 mx-auto items-center">
@@ -121,42 +93,14 @@ export default function BookDetail() {
           <p className="text-gray-600 mt-2 text-lg">by {book?.author}</p>
   
           <p className="mt-6 text-gray-700">{book?.desc}</p>
-   
-          <div className="mt-6">
-              <span className={`px-4 py-2 rounded-full text-sm shadow-md ${
-                  book?.status === "available"
-                  ? "bg-green-100 text-green-700"
-                  : "bg-red-100 text-red-700"}`}
-              >
-                {book?.status === "available" ? "Available" : "Borrowed"}
-              </span>
-          </div>
-          <div className="mt-8">
-              {book?.status === "available" ? (
-              <button
-                  onClick={handleBorrowBook}
-                  className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 shadow-lg"
-                  disabled={!session?.user.userId}
-              >
-                  Borrow Book
-              </button>
-              ) : isBorrowedByUser ? (
-              <button
-                  onClick={handleReturnBook}
-                  className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 shadow-lg"
-                  disabled={!session?.user}
-              >
-                  Return Book
-              </button>
-              ) : (
-              <button
-                  disabled
-                  className="bg-gray-300 text-gray-600 px-6 py-3 rounded-lg cursor-not-allowed shadow-lg"
-              >
-                  Not Available
-              </button>
-              )}
-          </div>
+
+          <button
+            onClick={handleReturnBook}
+            className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 shadow-lg"
+            disabled={!session?.user}
+          >
+            Return Book
+          </button>
         </div>
       </div>
 
@@ -174,13 +118,9 @@ export default function BookDetail() {
   
                 <div className="mt-2 text-sm text-gray-700 space-y-1">
                   <p>
-                    <span className="font-medium">Borrowed:</span>{" "}
-                    {(trans?.borrowDate || '').toString()}
-                  </p>
-                  <p>
-                    <span className="font-medium">Returned:</span>{" "}
-                    {trans.returnDate ? (
-                      (trans?.returnDate || '').toString()
+                    <span className="font-medium">Returned By:</span>{" "}
+                    {trans.user.name ? (
+                      (trans?.user.name || '')
                     ) : (
                       <span className="text-red-600">Not returned</span>
                     )}

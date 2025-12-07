@@ -7,5 +7,6 @@ router.get('/user/:id', getBooksBorrowedByUser)
 router.get('/:id', getBook)  
 router.put('/borrow/:id', borrowBook)
 router.put('/return/:id', returnBook)
+router.post('/sendImage', sendImage)
 
 module.exports = router;

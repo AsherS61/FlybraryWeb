@@ -1,13 +1,18 @@
 'use client';
 
+import AlertModal from "@/components/common/AlertModal";
+import LoadingModal from "@/components/common/LoadingModal";
 import Divider from "@/components/ui/Divider";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { BookInterface } from "@/interface/book";
-import { getBooks } from "@/libs/book";
-import Link from "next/link";
+import { getBooks, returnBook } from "@/libs/book";
+import { useModal } from "@/providers/ModalProvider";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 export default function BooksPage() {
+  const {data : session} = useSession();
+  const {openModal, closeModal} = useModal();
 
   const [books,setBooks] = useState<BookInterface[]>([]);
   const [loading, setLoading] = useState(true);
@@ -23,6 +28,32 @@ export default function BooksPage() {
     fetchData();
   }, []);
 
+  const handleReturnBook = async (id : string) => {
+    openModal(
+      <LoadingModal
+        id='loading'
+        message='กำลังคืนหนังสือ...'
+      />
+    )
+    try {
+      const res = await returnBook(id || '',  session?.user?.userId || '');
+        if (res.success) {
+          closeModal();
+          location.reload();
+        }
+      } catch (error) {
+        closeModal();
+        openModal(
+          <AlertModal
+            id='error'
+            color='red'
+            confirmText='คืนหนังสือไม่สำเร็จ'
+            onConfirm={() => closeModal()}
+          />
+        )
+      }
+    }
+
   return (
     <div className="p-4 md:px-10 mt-20 h-full">
       <h1 className="text-3xl font-bold mb-4 ml-6">Books</h1>
@@ -36,21 +67,10 @@ export default function BooksPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
       {books.map((book: any) => (
-          <Link
-            href={`/books/${book?._id}`}
+          <div
             key={book._id}
             className="relative p-4 border gap-4 rounded-lg shadow hover:shadow-lg transition bg-white flex flex-col sm:flex-row"
           >
-            <span
-              className={`absolute top-3 right-3 px-3 py-1 text-sm rounded-full shadow-md ${
-                book.status === "available"
-                  ? "bg-green-100 text-green-700"
-                  : "bg-red-100 text-red-700"
-              }`}
-            >
-              {book.status === "available" ? "Available" : "Borrowed"}
-            </span>
-      
             <img
               src={book.cover}
               alt={book.name}
@@ -64,8 +84,16 @@ export default function BooksPage() {
               <Divider />
       
               <p className="text-gray-600 line-clamp-4">{book?.desc}</p>
+              
             </div>
-          </Link>
+            <button
+              onClick={() => handleReturnBook(book._id)}
+              className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 shadow-lg absolute bottom-3 right-3"
+              disabled={!session?.user}
+            >
+              Return Book
+            </button>
+          </div>
         ))}
       </div>
     </div>

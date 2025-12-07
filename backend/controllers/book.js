@@ -93,14 +93,8 @@ exports.getBook = async (req, res, next) => {
 //@access   Private
 exports.getBooksBorrowedByUser = async (req, res, next) => {
     try {
-        const userId = req.params.id;
-        const books = await Book.find({ borrowedBy: userId });
-        if (!books) {
-            return res.status(404).json({
-                success: false,
-                error: `Books not found for User ID: ${userId}`
-            });
-        }
+        const books = User.find({ _id: req.params.id }).populate('booksReturned')
+        
         return res.status(200).json({
             success: true,
             data: books
@@ -207,14 +201,6 @@ exports.returnBook = async (req, res, next) => {
     try {
         const bookId = req.params.id;
         const book = await Book.findById(bookId);
-        const tx = await Transaction.findOne({ book: bookId });
-
-        if (!tx) {
-            return res.status(404).json({
-                success: false,
-                error: `Transaction not found for Book ID: ${bookId}`
-            });
-        }
 
         if (!book) {
             return res.status(404).json({
@@ -223,37 +209,68 @@ exports.returnBook = async (req, res, next) => {
             });
         }
 
-        if (book.status === 'available') {
-            return res.status(400).json({
-                success: false,
-                error: 'Book is already available'
-            });
-        }
-
         // ---- MQTT PUBLISH TO ESP32 Camera to get Picture ----
         const machineId = "F1";
-        const topic = `flybrary/${machineId}/return`;
 
-        await publishMqtt(mqttClient, topic);
-        console.log("MQTT Published:", topic);
+        const topic = `flybrary/${machineId}/borrow`;
+        const payload = JSON.stringify({
+            isbn: book.ISBN
+        });
 
-        // ---- Send picture to check in Flask ----
-        //
-        //
-
-        // if everything is ok 
-        
-        book.status = 'available';
-        book.borrowedBy = null;
-        await book.save();
-
-        tx.returnDate = new Date();
-        await tx.save();
+        publishMqtt(mqttClient, topic, payload);
+        console.log("MQTT Published:", topic, payload);
         
         return res.status(200).json({
             success: true,
-            data: book,
-            message: 'Book returned successfully'
+            message: 'Servo Opened for Return'
+        });
+
+    } catch (err) {
+        console.error(`Error returned book with ID ${req.params.id}:`, err.message);
+
+        if (err.name === 'CastError') {
+            return res.status(400).json({
+                success: false,
+                error: `Invalid Book ID format: ${req.params.id}`
+            });
+        }
+
+        return res.status(500).json({
+            success: false,
+            error: 'Internal Server Error during book returning.'
+        });
+    }
+};
+
+//@desc     Update book status to available
+//@route    Post /api/v1/books/sendImage
+//@access   Private
+exports.sendImage = async (req, res, next) => {
+    try {
+        const bookName = req.body.predicted_class;
+        const book = await Book.find({name: bookName});
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                error: `User not found with ID: ${req.user.id}`
+            });
+        }
+
+        if (!book) {
+            return res.status(404).json({
+                success: false,
+                error: `Book not found with ID: ${book._id}`
+            });
+        }
+        
+        user.booksReturned.push(book._id);
+        await user.save();
+        
+        return res.status(200).json({
+            success: true,
+            message: 'reveived image and found book'
         });
 
     } catch (err) {
