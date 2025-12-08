@@ -84,7 +84,7 @@ export default function LibraryDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-500 text-sm font-medium">Humidity</p>
-                <p className="text-3xl font-bold text-gray-800 mt-1">{esp?.humidity}</p>
+                <p className="text-3xl font-bold text-gray-800 mt-1">{esp?.humidity} %</p>
               </div>
               <div className="bg-green-100 p-3 rounded-full">
                 <Droplet className="w-6 h-6 text-green-600" />
@@ -96,7 +96,7 @@ export default function LibraryDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-500 text-sm font-medium">Temperature</p>
-                <p className="text-3xl font-bold text-gray-800 mt-1">{esp?.temperature}</p>
+                <p className="text-3xl font-bold text-gray-800 mt-1">{esp?.temperature} °C</p>
               </div>
               <div className="bg-red-100 p-3 rounded-full">
                 <Thermometer className="w-6 h-6 text-red-600" />
