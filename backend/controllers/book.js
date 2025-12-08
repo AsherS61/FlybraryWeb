@@ -244,6 +244,8 @@ exports.returnBook = async (req, res, next) => {
         user.booksReturned.push(book._id);
         await user.save();
 
+        delay(15000);
+
         if (user?.lineId) {
             const message = `You have returned item: ${book.name}.\nThank you for using Flybrary!`;
             console.log(`Sending (LINE ID: ${user.lineId}) return confirmation for book ${book.name}`);
