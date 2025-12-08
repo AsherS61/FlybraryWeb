@@ -20,7 +20,7 @@ export default function ProfilePage() {
   useEffect(() => {
     async function fetchData() {
 
-      const bookRes = await getBooksBorrowedByUser(user?.userId || '');
+      const bookRes = await getBooksBorrowedByUser(user?.lineId || '');
       setBooksBorrowed(bookRes.data);
 
       setBooksLoading(false)

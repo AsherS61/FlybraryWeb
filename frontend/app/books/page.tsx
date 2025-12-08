@@ -36,7 +36,7 @@ export default function BooksPage() {
       />
     )
     try {
-      const res = await returnBook(id || '',  session?.user?.lineId || '');
+      const res = await returnBook(id || '',  session?.user?.userId || '');
         if (res.success) {
           closeModal();
           location.reload();
