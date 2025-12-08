@@ -50,7 +50,7 @@ export async function returnBook(id : string, userId : string) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ userId: userId }),
+      body: JSON.stringify({ userId }),
       credentials: "include",
     })
 }

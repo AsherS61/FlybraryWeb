@@ -2,6 +2,7 @@ const Book = require('../models/Book.js')
 const User = require('../models/User');  
 const Transaction = require('../models/Transaction.js')
 const mqttClient = require('../utils/mqtt.js');
+const axios = require("axios");
 
 const publishMqtt = (client, topic, payload = '') => {
     return new Promise((resolve, reject) => {
