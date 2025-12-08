@@ -237,7 +237,7 @@ exports.returnBook = async (req, res, next) => {
             console.log(`Sending (LINE ID: ${user.lineId}) return confirmation for book ${book.name}`);
 
             const msgRes = await sendLineMessage(user?.lineId, message);
-            console.log(`LINE API response for user ${trx.user.name}:`, msgRes);
+            console.log(`LINE API response for user ${user.name}:`, msgRes);
         }
         
         return res.status(200).json({
