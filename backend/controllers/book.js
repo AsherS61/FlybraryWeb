@@ -267,6 +267,14 @@ exports.sendImage = async (req, res, next) => {
         
         user.booksReturned.push(book._id);
         await user.save();
+
+        if (user?.lineId) {
+            const message = `You have returned item: ${book.name}.\nThank you for using Flybrary!`;
+            console.log(`Sending (LINE ID: ${user.lineId}) return confirmation for book ${book.name}`);
+
+            const msgRes = await sendLineMessage(user?.lineId, message);
+            console.log(`LINE API response for user ${trx.user.name}:`, msgRes);
+        }
         
         return res.status(200).json({
             success: true,
@@ -289,3 +297,25 @@ exports.sendImage = async (req, res, next) => {
         });
     }
 };
+
+const sendLineMessage = async (userId, message) => {
+    try {
+      const res = await axios.post(
+        "https://api.line.me/v2/bot/message/push",
+        {
+          to: userId,
+          messages: [{ type: "text", text: message }],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.LINE_CHANNEL_ACCESS_TOKEN}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      return res.data;
+    } catch (err) {
+      console.log("LINE API error:", err.response?.data || err.message);
+    }
+  };
