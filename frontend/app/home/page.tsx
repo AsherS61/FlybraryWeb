@@ -1,12 +1,14 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { Book, Users, TrendingUp, Clock, Search, Filter } from 'lucide-react';
+import { Book, Users, TrendingUp, Clock, Search, Filter, Thermometer } from 'lucide-react';
 import { getBooks } from '@/libs/book';
 import { BookInterface } from '@/interface/book';
 import { getTransactions } from '@/libs/transaction';
 import { TransactionInterface } from '@/interface/transaction';
 import { useRouter } from 'next/navigation';
+import { getTemperature } from '@/libs/esp';
+import { EspInterface } from '@/interface/esp';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 export default function LibraryDashboard() {
@@ -17,7 +19,8 @@ export default function LibraryDashboard() {
 
   const [books, setBooks] = useState<BookInterface[]>([])
   const [transactions, setTransactions] = useState<TransactionInterface[]>([])
-
+  const [esp, setEsp] = useState<EspInterface>();
+ 
   useEffect(() => {
     async function fetchData() {
       const res = await getBooks()
@@ -37,6 +40,15 @@ export default function LibraryDashboard() {
     }
 
     setTransLoading(true);
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await getTemperature()
+      setEsp(res.data);
+    }
+
     fetchData();
   }, []);
 
@@ -83,11 +95,11 @@ export default function LibraryDashboard() {
           <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-red-500">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm font-medium">Borrowed</p>
-                <p className="text-3xl font-bold text-gray-800 mt-1">{stats?.borrowedBooks}</p>
+                <p className="text-gray-500 text-sm font-medium">Temperature</p>
+                <p className="text-3xl font-bold text-gray-800 mt-1">{esp?.temperature}</p>
               </div>
               <div className="bg-red-100 p-3 rounded-full">
-                <Clock className="w-6 h-6 text-red-600" />
+                <Thermometer className="w-6 h-6 text-red-600" />
               </div>
             </div>
           </div>
