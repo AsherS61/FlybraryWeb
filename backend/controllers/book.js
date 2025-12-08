@@ -94,26 +94,37 @@ exports.getBook = async (req, res, next) => {
 //@access   Private
 exports.getBooksBorrowedByUser = async (req, res, next) => {
     try {
-        const user = await User.find({ lineId: req.params.id }).populate('booksReturned')
-        
+        const user = await User.findOne({ lineId: req.params.id })
+                               .populate('booksReturned');
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                error: `User not found with lineId: ${req.params.id}`
+            });
+        }
+
         return res.status(200).json({
             success: true,
-            data: user.booksReturned
+            data: user.booksReturned || []
         });
     } catch (err) {
         console.error(`Error fetching books for User ID ${req.params.id}:`, err.message);
+
         if (err.name === 'CastError') {
-             return res.status(400).json({
+            return res.status(400).json({
                 success: false,
                 error: `Invalid User ID format: ${req.params.id}`
             });
         }
+
         return res.status(500).json({
             success: false,
             error: 'Internal Server Error during user books retrieval.'
         });
     }
 };
+
 
 
 
