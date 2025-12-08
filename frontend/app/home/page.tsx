@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { Book, Users, TrendingUp, Clock, Search, Filter, Thermometer } from 'lucide-react';
+import { Book, Users, TrendingUp, Clock, Search, Filter, Thermometer, Droplet } from 'lucide-react';
 import { getBooks } from '@/libs/book';
 import { BookInterface } from '@/interface/book';
 import { getTransactions } from '@/libs/transaction';
@@ -83,11 +83,11 @@ export default function LibraryDashboard() {
           <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm font-medium">Available</p>
-                <p className="text-3xl font-bold text-gray-800 mt-1">{stats?.availableBooks}</p>
+                <p className="text-gray-500 text-sm font-medium">Humidity</p>
+                <p className="text-3xl font-bold text-gray-800 mt-1">{esp?.humidity}</p>
               </div>
               <div className="bg-green-100 p-3 rounded-full">
-                <TrendingUp className="w-6 h-6 text-green-600" />
+                <Droplet className="w-6 h-6 text-green-600" />
               </div>
             </div>
           </div>

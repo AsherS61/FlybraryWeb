@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 const espSchema = new mongoose.Schema({
     temperature: {
         type: Number,
-        required: true
+    },
+    humidity: {
+        type: Number,
     },
     recordedAt: {
         type: Date,
