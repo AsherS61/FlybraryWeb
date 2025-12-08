@@ -35,7 +35,7 @@ exports.getTemperature = async (req, res, next) => {
 //@access   Public
 exports.postTemperature = async (req, res, next) => {
     try {
-        const temperature = parseFloat(req.body);
+        const temperature = req.body;
         console.log(req.body);
         console.log(req)
         
