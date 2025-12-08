@@ -267,8 +267,20 @@ exports.returnBook = async (req, res, next) => {
 //@access   Private
 exports.sendImage = async (req, res, next) => {
     try {
-        const bookName = req.body.predicted_class;
-        const book = await Book.find({name: bookName});
+        const rawName = req.body.predicted_class;
+
+        // decode URI encoding if any (e.g. %20)
+        let bName = decodeURIComponent(rawName);
+        
+        // replace underscores with spaces
+        bName = bName.replace(/_/g, " ");
+        
+        // trim extra spaces
+        bName = bName.trim();
+        
+        console.log("Decoded Book Name:", bName);
+
+        const book = await Book.find({name : bName});
 
         if (!book) {
             return res.status(404).json({
