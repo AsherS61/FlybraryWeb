@@ -36,8 +36,10 @@ exports.getTemperature = async (req, res, next) => {
 exports.postTemperature = async (req, res, next) => {
     try {
         const temperature = parseFloat(req.body);
+        console.log(req.body);
+        console.log(req)
         
-        const newEntry = new Esp({ temperature });
+        const newEntry = new Esp({ temperature : temperature });
         await newEntry.save();
 
         return res.status(201).json({
