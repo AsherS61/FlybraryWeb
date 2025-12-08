@@ -201,6 +201,14 @@ exports.returnBook = async (req, res, next) => {
     try {
         const bookId = req.params.id;
         const book = await Book.findById(bookId);
+        const user = await User.findById(req.body.userId);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                error: `User not found with ID: ${req.body.userId}`
+            });
+        }
 
         if (!book) {
             return res.status(404).json({
@@ -219,6 +227,18 @@ exports.returnBook = async (req, res, next) => {
 
         publishMqtt(mqttClient, topic, payload);
         console.log("MQTT Published:", topic, payload);
+
+        
+        user.booksReturned.push(book._id);
+        await user.save();
+
+        if (user?.lineId) {
+            const message = `You have returned item: ${book.name}.\nThank you for using Flybrary!`;
+            console.log(`Sending (LINE ID: ${user.lineId}) return confirmation for book ${book.name}`);
+
+            const msgRes = await sendLineMessage(user?.lineId, message);
+            console.log(`LINE API response for user ${trx.user.name}:`, msgRes);
+        }
         
         return res.status(200).json({
             success: true,
@@ -249,31 +269,12 @@ exports.sendImage = async (req, res, next) => {
     try {
         const bookName = req.body.predicted_class;
         const book = await Book.find({name: bookName});
-        const user = await User.findById(req.user.id);
-
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                error: `User not found with ID: ${req.user.id}`
-            });
-        }
 
         if (!book) {
             return res.status(404).json({
                 success: false,
                 error: `Book not found with ID: ${book._id}`
             });
-        }
-        
-        user.booksReturned.push(book._id);
-        await user.save();
-
-        if (user?.lineId) {
-            const message = `You have returned item: ${book.name}.\nThank you for using Flybrary!`;
-            console.log(`Sending (LINE ID: ${user.lineId}) return confirmation for book ${book.name}`);
-
-            const msgRes = await sendLineMessage(user?.lineId, message);
-            console.log(`LINE API response for user ${trx.user.name}:`, msgRes);
         }
         
         return res.status(200).json({
